@@ -1,27 +1,39 @@
 <template>
-  <div class="home">
-    <section class="products">
-      <div class="products__product-card" v-for="product in products" :key="product.id">
-        <p>{{ product.id }}</p>
-        <p>{{ product.name }}</p>
-        <p>{{ product.description }}</p>
-        <p>{{ product.discount }}</p>
-        <p>{{ product.price_normal }}</p>
-        <p>{{ product.price_offer }}</p>
-        <p>{{ product.url }}</p>
-        <p><img :src="product.img" class="products__product-card__image" alt="product_img"> </p>
-      </div>
-    </section>
-  </div>
+ <div class="home center grid">
+    <vs-row vs-type="flex" vs-justify="center">
+      <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="2"></vs-col>
+      <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="8">
+        <section class="products">
+          <ProductItem class="products__product-card" v-for="product in products"
+          :key="product.id"
+          :name="product.name"
+          :description="product.description"
+          :url="product.url"
+          :price_normal="product.price_normal"
+          :price_offer="product.price_offer"
+          :img="product.img"
+          :discount="product.discount"
+          >
+          </ProductItem>
+        </section>
+      </vs-col>
+      <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="2"></vs-col>
+    </vs-row>
+ </div>
+
 </template>
 
 <script>
+
+import ProductItem from '../components/ProductItem'
 import { mapState } from 'vuex'
 const fb = require('../firebaseConfig.js')
 
 export default {
   name: 'Home',
-  components: {},
+  components: {
+    ProductItem
+  },
   computed: {
     ...mapState(['products'])
   },
@@ -47,12 +59,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.products{
-  &__product-card {
-    width: 100px;
-    &__image {
-      width: 200px;
-    }
+.home{
+  &:after{
+    content: "";
+    background-image: radial-gradient(var(--vs-theme-bg2) 0,var(--vs-theme-bg) 40%,transparent 75%);
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
   }
 }
 </style>
