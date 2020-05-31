@@ -2,38 +2,42 @@
   <div>
     <button @click="getProducts" >Click me</button>
     <div v-for="product in products" :key="product.id">
-      <span>{{ product.id }}</span>
-      <span>{{ product.brand }}</span>
-      <span>{{ product.name }}</span>
-      <span>{{ product.description }}</span>
-      <span>{{ product.disccount }}</span>
-      <span>{{ product.price_before }}</span>
-      <span>{{ product.price_after }}</span>
-      <span>{{ product.url }}</span>
+      <p>{{ product.id }}</p>
+      <p>{{ product.name }}</p>
+      <p>{{ product.description }}</p>
+      <p>{{ product.disccount }}</p>
+      <p>{{ product.price_before }}</p>
+      <p>{{ product.price_after }}</p>
+      <p>{{ product.url }}</p>
     </div>
   </div>
 </template>
 
 <script>
-
+import { mapState } from 'vuex'
 const fb = require('../firebaseConfig.js')
 
 export default {
   name: 'HelloWorld',
+  computed: {
+    ...mapState(['products'])
+  },
   props: {
     msg: String
   },
-  data () {
-    return {
-      products: []
-    }
-  },
   methods: {
-    getProducts () {
-      fb.productsCollection.get().then(products => {
-        this.products = products
-        console.log(this.products)
-      })
+    async getProducts () {
+      try {
+        const { docs } = await fb.productsCollection.get()
+
+        const products = docs.map(doc => {
+          const { id } = doc
+          const data = doc.data()
+          return { id, ...data }
+        })
+
+        this.$store.commit('setProducts', products)
+      } catch (error) { throw new Error('Something gone wrong!') }
     }
   }
 }
