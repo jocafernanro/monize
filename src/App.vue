@@ -33,6 +33,11 @@
   --vs-theme-bg2: #eef2f5;
   --vs-theme-code: #3f3d56;
   --vs-theme-code2: #363449;
+  --vs-theme-primary: #195bff;
+  --vs-theme-warn: #ffba00;
+  --vs-theme-danger: #ff4757;
+  --vs-theme-success: #47c93a;
+  --vs-theme-dark: #1e1e1e;
 
 }
 

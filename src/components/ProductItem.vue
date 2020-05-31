@@ -11,10 +11,10 @@
       </div>
       <div class="product-item__footer__price">
         <div class="product-item__footer__price__after">
-          {{ price_after }}€
+          {{ price_offer }}€
         </div>
         <div class="product-item__footer__price__before">
-          {{ price_before }}€
+          {{ price_normal }}€
         </div>
       </div>
     </div>
@@ -23,7 +23,7 @@
         @click="active = 1"
         class="product-item__button"
       >
-        <a :href="url">
+        <a :href="url" target="_blank">
           Ver chollo
         </a>
     </vs-button>
@@ -37,18 +37,23 @@ export default {
   props: {
     img: String,
     discount: Number,
-    price_after: Number,
-    price_before: Number,
+    price_offer: Number,
+    price_normal: Number,
     url: String,
     name: String,
     description: String
+  },
+  data () {
+    return {
+      active: 0
+    }
   }
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
     .product-item {
-      width: 100%;
+      width: 31%;
       background: var(--vs-theme-layout);
       border-radius: 30px;
       padding: 20px;
@@ -56,7 +61,8 @@ export default {
       box-sizing: border-box;
       z-index: 100;
       box-shadow: 0 15px 30px -8px rgba(0,0,0,.08);
-      display: block;
+      display: inline-block;
+      margin: 0 8px 16px 8px;
 
       &__image {
         width: 100%;
@@ -81,12 +87,14 @@ export default {
           width: 60px;
           height: 60px;
           border-radius: 22px;
-          background: var(--vs-theme-layout);
+          background-color: var(--vs-theme-success);
+          color: var(--vs-theme-layout);
           box-shadow: 10px 12px 50px -6px rgba(0,0,0,.3);
           z-index: 300;
           display: flex;
           align-items: center;
           justify-content: center;
+          font-weight: var(--font-weight-regular);
       }
 
       &__footer {
