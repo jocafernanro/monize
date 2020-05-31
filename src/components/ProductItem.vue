@@ -7,7 +7,7 @@
     <div class="product-item__footer">
       <div class="product-item__footer__info">
         <h4 class="product-item__footer__info__title">{{ name }}</h4>
-        <p class="product-item__footer__info__subtitle">{{ description }}</p>
+        <p :class="`product-item__footer__info__subtitle shop shop--${shop.toLowerCase()}`">{{ shop }}</p>
       </div>
       <div class="product-item__footer__price">
         <div class="product-item__footer__price__after">
@@ -41,12 +41,17 @@ export default {
     price_normal: Number,
     url: String,
     name: String,
-    description: String
+    shop: String
   },
   data () {
     return {
       active: 0
     }
+  },
+  methods: {
+    // getBrandStyle() {
+    //   return 0
+    // }
   }
 }
 </script>
@@ -145,6 +150,16 @@ export default {
           text-decoration: none;
           color: white;
         }
+      }
+    }
+
+    .shop {
+      padding: 0.5em;
+      border-radius: 1em;
+
+      &--amazon{
+        color: #EFCA00;
+        background-color: #FFFB8E;
       }
     }
 </style>

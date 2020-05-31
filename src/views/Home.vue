@@ -7,7 +7,7 @@
           <ProductItem class="products__product-card" v-for="product in products"
           :key="product.id"
           :name="product.name"
-          :description="product.description"
+          :shop="product.shop"
           :url="product.url"
           :price_normal="product.price_normal"
           :price_offer="product.price_offer"
@@ -68,7 +68,7 @@ export default {
     right: 0;
     width: 100%;
     height: 100%;
-    z-index: 1;
+    z-index: -10;
   }
 }
 </style>
