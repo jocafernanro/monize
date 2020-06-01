@@ -6,17 +6,23 @@
     <div class="product-item__discount">{{ discount }}%</div>
     <div class="product-item__footer">
       <div class="product-item__footer__info">
+        <div class="product-item__footer__product">
+          <div class="product-item__footer__product__price">
+            <div class="product-item__footer__product__price__after">
+              {{ price_offer }}€
+            </div>
+            <div class="product-item__footer__product__price__before">
+              {{ price_normal }}€
+            </div>
+          </div>
+          <div class="product-item__footer__product__shop">
+            <p :class="`product-item__footer__product__shop shop shop--${shop.toLowerCase()}`">{{ shop }}</p>
+
+          </div>
+        </div>
         <h4 class="product-item__footer__info__title">{{ name }}</h4>
-        <p :class="`product-item__footer__info__subtitle shop shop--${shop.toLowerCase()}`">{{ shop }}</p>
       </div>
-      <div class="product-item__footer__price">
-        <div class="product-item__footer__price__after">
-          {{ price_offer }}€
-        </div>
-        <div class="product-item__footer__price__before">
-          {{ price_normal }}€
-        </div>
-      </div>
+
     </div>
     <vs-button
         :active="active == 1"
@@ -79,6 +85,7 @@ export default {
         align-items: center;
         justify-content: center;
         cursor: pointer;
+        height: 200px;
 
         &__img{
           width: 100%;
@@ -104,40 +111,55 @@ export default {
 
       &__footer {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
+        flex-direction: column;
         padding: 10px 0;
 
-        &__info {
-          flex: 2;
+        &__product {
           display: flex;
-          flex-direction: column;
-          align-items: flex-start;
+          justify-content: flex-start;
+          align-items: baseline;
 
-          &__title {
-            margin: 0;
-            font-weight: 600;
-            line-height: 1.25;
+          &__price {
+            display: flex;
+            flex-direction: row;
+            align-items: baseline;
+            flex: 2;
+
+            &__after {
+              font-weight: 600;
+              color: var(--vs-theme-danger);
+              font-size: 24px;
+            }
+
+            &__before {
+              text-decoration: line-through;
+              margin-left: 8px;
+              color: var(--color-grey);
+              font-size: 14px;
+            }
           }
 
-          &__subtitle {
+          &__shop {
             font-size: .8rem;
             margin: 0;
             line-height: 1.7;
           }
         }
 
-        &__price {
-          flex: 1;
+        &__info {
           display: flex;
-          justify-content: flex-end;
+          flex-direction: column;
 
-          &__after {
+          &__title {
+            margin: 0;
             font-weight: 600;
-          }
-
-          &__before {
-            text-decoration: line-through;
+            line-height: 1.25;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            min-height: 40px;
           }
         }
       }
