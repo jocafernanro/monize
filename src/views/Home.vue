@@ -19,6 +19,7 @@
       </vs-col>
       <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="2"></vs-col>
     </vs-row>
+   <cookie-law></cookie-law>
  </div>
 
 </template>
@@ -26,13 +27,15 @@
 <script>
 
 import ProductItem from '../components/ProductItem'
+import CookieLaw from '../components/CookieLaw'
 import { mapState } from 'vuex'
 const fb = require('../firebaseConfig.js')
 
 export default {
   name: 'Home',
   components: {
-    ProductItem
+    ProductItem,
+    CookieLaw
   },
   computed: {
     ...mapState(['products'])
