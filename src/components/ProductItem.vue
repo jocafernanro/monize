@@ -63,17 +63,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    $large-screen: var(--max-width);
     .product-item {
-      width: 31%;
+      min-width: 0;
+      justify-self: stretch;
       background: var(--vs-theme-layout);
       border-radius: 30px;
-      padding: 20px;
+      padding: 25px;
       position: relative;
       box-sizing: border-box;
       z-index: 100;
       box-shadow: 0 15px 30px -8px rgba(0,0,0,.08);
       display: inline-block;
-      margin: 0 8px 16px 8px;
 
       &__image {
         width: 100%;
@@ -88,7 +89,7 @@ export default {
         height: 200px;
 
         &__img{
-          width: 100%;
+          height: 100%;
         }
       }
 
