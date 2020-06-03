@@ -14,18 +14,22 @@
         :discount="product.discount"
       ></ProductItem>
     </section>
+    <cookie-law></cookie-law>
   </div>
 </template>
 
 <script>
+
 import ProductItem from '../components/ProductItem'
+import CookieLaw from '../components/CookieLaw'
 import { mapState } from 'vuex'
 const fb = require('../firebaseConfig.js')
 
 export default {
   name: 'Home',
   components: {
-    ProductItem
+    ProductItem,
+    CookieLaw
   },
   computed: {
     ...mapState(['products'])
