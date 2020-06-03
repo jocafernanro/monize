@@ -1,29 +1,16 @@
 <template>
-  <div class="main-wrapper">
-    <cookie-law theme="blood-orange--rounded">
-      <div slot-scope="props">
-        <p>
-          This website uses cookies 🍪 to ensure you get the best experience on our website. More info <router-link to="/about" class="aboutLink">Click here</router-link>
-        </p>
-        <div class="center grid cookieButton">
-          <vs-button
-            color="rgb(59,222,200)"
-            gradient
-            @click="props.accept"
-          >
-            I accept
-          </vs-button>
-          <vs-button
-            danger
-            border
-            @click="props.close"
-          >
-            Ignore me
-          </vs-button>
-        </div>
+  <cookie-law theme="blood-orange--rounded" class="cookie-law">
+    <div slot-scope="props" class="cookie-law__props">
+      <p class="cookie-law__props__info">
+        This website uses cookies 🍪 to ensure you get the best experience on our website. More info
+        <router-link to="/about" class="cookie-law__props__info__about-link">Click here</router-link>
+      </p>
+      <div class="center grid cookie-law__props__buttons">
+        <vs-button color="rgb(59,222,200)" gradient @click="props.accept">I accept</vs-button>
+        <vs-button dark shadow @click="props.close">Ignore me</vs-button>
       </div>
-    </cookie-law>
-  </div>
+    </div>
+  </cookie-law>
 </template>
 
 <script>
@@ -35,12 +22,22 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
 
-  .aboutLink{
-    color:dodgerblue;
+.cookie-law {
+  background-color: var(--vs-theme-primary);
+  &__props {
+    &__info {
+      &__about-link {
+        color: var(--vs-theme-warn);
+        text-decoration: none;
+      }
+    }
+
+    &__buttons {
+      display: flex;
+    }
   }
-  .cookieButton{
-    display: flex;
-  }
+}
+
 </style>
