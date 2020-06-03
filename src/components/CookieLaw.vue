@@ -2,12 +2,12 @@
   <cookie-law theme="blood-orange--rounded" class="cookie-law">
     <div slot-scope="props" class="cookie-law__props">
       <p class="cookie-law__props__info">
-        This website uses cookies 🍪 to ensure you get the best experience on our website. More info
-        <router-link to="/about" class="cookie-law__props__info__about-link">Click here</router-link>
+        {{ $t("cookies.info") }}
+        <router-link to="/about" class="cookie-law__props__info__about-link">{{ $t("cookies.clickHere") }}</router-link>
       </p>
       <div class="center grid cookie-law__props__buttons">
-        <vs-button color="rgb(59,222,200)" gradient @click="props.accept">I accept</vs-button>
-        <vs-button dark shadow @click="props.close">Ignore me</vs-button>
+        <vs-button color="rgb(59,222,200)" gradient @click="props.accept">{{ $t("cookies.accept") }}</vs-button>
+        <vs-button dark shadow @click="props.close">{{ $t("cookies.ignoreMe") }}</vs-button>
       </div>
     </div>
   </cookie-law>

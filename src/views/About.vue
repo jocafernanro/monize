@@ -9,6 +9,7 @@
     </section>
   </div>
 </template>
+
 <style lang="scss" scoped>
 .about {
   display: flex;
