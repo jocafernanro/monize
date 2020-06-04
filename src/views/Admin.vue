@@ -110,13 +110,9 @@
     </div>
 </template>
 <script>
-import { mapState } from 'vuex'
 const fb = require('../firebaseConfig.js')
 export default {
   name: 'Admin',
-  computed: {
-    ...mapState(['adminProducts'])
-  },
   data: () => {
     return {
       tableConfig: {
@@ -146,7 +142,6 @@ export default {
 
         this.$store.commit('setProducts', products)
         this.tableConfig.products = products
-        console.log(products)
       } catch (error) {
         throw new Error('Something gone wrong!')
       }
