@@ -107,10 +107,15 @@
           </vs-option>
         </vs-select>
       </vs-dialog>
+
+    <vs-button relief @click="createFakeProduct">Create fake product</vs-button>
+
     </div>
 </template>
 <script>
 const fb = require('../firebaseConfig.js')
+const faker = require('faker')
+
 export default {
   name: 'Admin',
   data: () => {
@@ -145,6 +150,30 @@ export default {
       } catch (error) {
         throw new Error('Something gone wrong!')
       }
+    },
+    async createFakeProduct () {
+      const productName = faker.commerce.productName()
+      const priceNormal = faker.commerce.price()
+      const priceOffer = faker.commerce.price()
+      const image = faker.image.image()
+      const url = faker.internet.url('https://amazon.es')
+
+      await fb.productsCollection
+        .add({
+          name: productName,
+          price_normal: priceNormal,
+          price_offer: priceOffer,
+          discount: faker.random.number({
+            min: 10,
+            max: 50
+          }),
+          shop: 'Amazon',
+          img: image,
+          url: url
+        })
+        .then(ref => {
+          console.log('Added document with ID: ', ref.id)
+        })
     }
   },
   mounted () {
