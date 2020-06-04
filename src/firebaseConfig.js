@@ -1,5 +1,7 @@
 import firebase from 'firebase'
 import 'firebase/firestore'
+import 'firebase/auth'
+var firebaseui = require('firebaseui')
 
 const config = {
   apiKey: `${process.env.VUE_APP_MONIZE_API_KEY}`,
@@ -24,8 +26,29 @@ db.settings(settings)
 const productsCollection = db.collection('products')
 const brandsCollection = db.collection('brands')
 
+// firebase auth
+const ui = new firebaseui.auth.AuthUI(firebase.auth())
+const uiConfig = {
+  signInSuccessUrl: '/admin',
+  signInOptions: [
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID
+  ]
+}
+
+const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+      unsubscribe()
+      resolve(user)
+    }, reject)
+  })
+}
+
 export {
   db,
   productsCollection,
-  brandsCollection
+  brandsCollection,
+  ui,
+  uiConfig,
+  getCurrentUser
 }
