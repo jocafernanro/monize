@@ -13,6 +13,9 @@ const messages = {
       clickHere: 'Click aquí',
       accept: 'Lo acepto',
       ignoreMe: 'Ignorar'
+    },
+    notFound: {
+      title: 'Ops! La pagina a la que intectas acceder no existe'
     }
   }
 }
