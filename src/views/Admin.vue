@@ -153,8 +153,8 @@ export default {
     },
     async createFakeProduct () {
       const productName = faker.commerce.productName()
-      const priceNormal = faker.commerce.price()
-      const priceOffer = faker.commerce.price()
+      const priceNormal = parseFloat(faker.commerce.price())
+      const priceOffer = parseFloat(faker.commerce.price())
       const image = faker.image.image()
       const url = faker.internet.url('https://amazon.es')
 
@@ -163,10 +163,10 @@ export default {
           name: productName,
           price_normal: priceNormal,
           price_offer: priceOffer,
-          discount: faker.random.number({
+          discount: parseInt(faker.random.number({
             min: 10,
             max: 50
-          }),
+          })),
           shop: 'Amazon',
           img: image,
           url: url
