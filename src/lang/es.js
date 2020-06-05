@@ -21,8 +21,8 @@ const messages = {
       fourthParagraph: 'Monize no realiza ningún reembolso de productos comprados a traves de nuestra web. Le pedimos que lea cuidadosamente los condiciones del proveedor  que le servirá el producto antes de comprarlo.',
       fifthTitle: 'PRIVACIDAD',
       fifthParagraph: 'Monize garantiza que la información personal que usted envía cuenta con la seguridad necesaria. Los datos ingresados por usuario o en el caso de requerir una validación de los pedidos no serán entregados a terceros, salvo que deba ser revelada en cumplimiento a una orden judicial o requerimientos legales.\n' +
-        '\n\nLa suscripción a boletines de correos electrónicos publicitarios es voluntaria y podría ser seleccionada al momento de crear su cuenta.\n' +
-        '\n\nMonize reserva los derechos de cambiar o de modificar estos términos sin previo aviso.\n'
+        '\nLa suscripción a boletines de correos electrónicos publicitarios es voluntaria y podría ser seleccionada al momento de crear su cuenta.\n' +
+        '\nMonize reserva los derechos de cambiar o de modificar estos términos sin previo aviso.\n'
     },
     cookies: {
       info: 'Este sitio web usa cookies 🍪 para asegurarte de que obtienes la mejor experiencia en nuestra web. Más info',
