@@ -24,15 +24,14 @@
       </div>
 
     </div>
-    <vs-button
-        :active="active == 1"
-        @click="active = 1"
-        class="product-item__button"
-      >
-        <a :href="url" target="_blank">
-          Ver chollo
-        </a>
-    </vs-button>
+    <a :href="url" target="_blank" class="product-item__container">
+      <vs-button
+          :active="active == 1"
+          @click="active = 1"
+          class="product-item__container__button"
+        >Ver chollo</vs-button>
+    </a>
+
   </div>
 </template>
 
@@ -165,13 +164,13 @@ export default {
         }
       }
 
-      &__button {
-        width: 100%;
-        margin: 0;
+      &__container {
+        text-decoration: none;
+        color: white;
 
-        a {
-          text-decoration: none;
-          color: white;
+        &__button {
+          width: 100%;
+          margin: 0;
         }
       }
     }
