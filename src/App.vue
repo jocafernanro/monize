@@ -34,11 +34,17 @@
       </div>
     </header>
     <router-view />
+    <Footer></Footer>
   </div>
 </template>
 
 <script>
+import Footer from './components/main/Footer'
+
 export default {
+  components: {
+    Footer
+  },
   data () {
     return {
       responsiveMenuActivated: false
