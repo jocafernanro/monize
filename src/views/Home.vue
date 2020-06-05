@@ -61,7 +61,8 @@ export default {
 .home {
   display: flex;
   justify-content: center;
-  margin-top: 1.5em;
+  padding: 2em 0;
+
   &:after {
     content: "";
     background-image: radial-gradient(

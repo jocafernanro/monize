@@ -3,13 +3,11 @@
     <header class="navbar">
       <div class="nav">
         <div class="nav__item">
-          <router-link to="/">
-            <img
-              class="nav__item__logo"
-              src="https://firebasestorage.googleapis.com/v0/b/monize-63cfc.appspot.com/o/logo.png?alt=media&token=edb2810f-c47a-4f6d-91f4-3bb619723459"
-              alt="logo"
-            />
-          </router-link>
+          <router-link to="/"><img
+            class="nav__item__logo"
+            src="https://firebasestorage.googleapis.com/v0/b/monize-63cfc.appspot.com/o/logo.png?alt=media&token=edb2810f-c47a-4f6d-91f4-3bb619723459"
+            alt="logo"
+          /></router-link>
         </div>
 
         <div class="nav__item nav__item--menu">
@@ -36,11 +34,17 @@
       </div>
     </header>
     <router-view />
+    <Footer></Footer>
   </div>
 </template>
 
 <script>
+import Footer from './components/main/Footer'
+
 export default {
+  components: {
+    Footer
+  },
   data () {
     return {
       responsiveMenuActivated: false

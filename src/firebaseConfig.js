@@ -13,7 +13,7 @@ const config = {
 }
 
 firebase.initializeApp(config)
-firebase.analytics()
+// firebase.analytics()
 
 // firebase utils
 const db = firebase.firestore()
