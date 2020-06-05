@@ -26,7 +26,7 @@
     </div>
     <vs-button
         :active="active == 1"
-        @click="active = 1"
+        v-on:blur="active = 0"
         class="product-item__button"
       >
         <a :href="url" target="_blank">
