@@ -27,7 +27,6 @@
     <a :href="url" target="_blank" class="product-item__container">
       <vs-button
           :active="active == 1"
-          @click="active = 1"
           class="product-item__container__button"
         >Ver chollo</vs-button>
     </a>
