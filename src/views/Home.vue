@@ -23,7 +23,6 @@
 import ProductItem from '../components/ProductItem'
 import CookieLaw from '../components/CookieLaw'
 import { mapState } from 'vuex'
-const fb = require('../firebaseConfig.js')
 
 export default {
   name: 'Home',
@@ -31,28 +30,11 @@ export default {
     ProductItem,
     CookieLaw
   },
-  computed: {
-    ...mapState(['products'])
-  },
-  methods: {
-    async getProducts () {
-      try {
-        const { docs } = await fb.productsCollection.get()
-
-        const products = docs.map(doc => {
-          const { id } = doc
-          const data = doc.data()
-          return { id, ...data }
-        })
-
-        this.$store.commit('setProducts', products)
-      } catch (error) {
-        throw new Error('Something gone wrong!')
-      }
-    }
-  },
+  computed: mapState({
+    products: state => state.products.all
+  }),
   mounted () {
-    this.getProducts()
+    this.$store.dispatch('products/getProducts')
   }
 }
 </script>
