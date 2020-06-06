@@ -37,9 +37,9 @@ const routes = [
   {
     path: '/admin/products/create',
     name: 'CreateProduct',
-    // meta: {
-    //   requiresAuth: true
-    // },
+    meta: {
+      requiresAuth: true
+    },
     component: () => import('../views/admin/CreateProduct.vue')
   }
 ]

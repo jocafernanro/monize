@@ -4,15 +4,16 @@ const faker = require('faker')
 // initial state
 const state = () => ({
   all: [],
+  brands: [],
   performingRequest: false,
   product: parseProduct()
 })
 
-const parseProduct = (name = '', priceNormal, priceOffer, discount, shop = '', img = '', url = '') => ({
+const parseProduct = (name = '', priceNormal, priceOffer, shop = '', img = '', url = '') => ({
   name,
   price_normal: priceNormal,
   price_offer: priceOffer,
-  discount,
+  discount: parseInt((priceOffer * 100) / priceNormal),
   shop,
   img,
   url
@@ -39,20 +40,32 @@ const actions = {
     }
   },
 
+  async getBrands ({ commit }) {
+    try {
+      const { docs } = await fb.brandsCollection.get()
+
+      const brands = docs.map(doc => doc.data().name)
+
+      commit('setBrands', brands)
+    } catch (error) {
+      throw new Error('Something gone wrong!')
+    }
+  },
+
   updateProducts ({ commit }, products) {
     commit('setProducts', products)
   },
 
-  async createProduct ({ commit }, product) {
+  async createProduct ({ commit }, { name, priceNormal, priceOffer, shop, img, url }) {
     commit('setPerformingRequest', true)
-    await fb.productsCollection
-      .add(product)
-      .then(ref => {
-        console.log('Added document with ID: ', ref.id)
-        commit('addProduct', product)
-        commit('resetProduct')
-        commit('setPerformingRequest', false)
-      })
+    return fb.productsCollection.add(parseProduct(
+      name,
+      priceNormal,
+      priceOffer,
+      shop,
+      img,
+      url
+    ))
   },
 
   async createFakeProduct ({ commit, dispatch }) {
@@ -65,10 +78,6 @@ const actions = {
       productName,
       priceNormal,
       priceOffer,
-      parseInt(faker.random.number({
-        min: 10,
-        max: 50
-      })),
       'Amazon',
       image,
       url)
@@ -80,6 +89,9 @@ const actions = {
 const mutations = {
   setProducts (state, products) {
     state.all = products
+  },
+  setBrands (state, brands) {
+    state.brands = brands
   },
   addProduct (state, product) {
     state.all.push(product)

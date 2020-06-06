@@ -1,6 +1,11 @@
 
 <template>
-    <div class="center">
+    <div class="center admin">
+      <div class="admin__actions">
+        <vs-button class="admin__actions__button" relief @click="createFakeProduct">Create fake product</vs-button>
+        <router-link class="admin__actions__button" to="/admin/products/create"><vs-button relief>Create</vs-button></router-link>
+
+      </div>
       <vs-table
         v-model="tableConfig.selected"
         >
@@ -107,10 +112,6 @@
           </vs-option>
         </vs-select>
       </vs-dialog>
-
-    <vs-button relief @click="createFakeProduct">Create fake product</vs-button>
-    <router-link class="nav__item__link" to="/admin/products/create"><vs-button relief>Create</vs-button></router-link>
-
     </div>
 </template>
 <script>
@@ -127,7 +128,7 @@ export default {
         search: '',
         allCheck: false,
         page: 1,
-        max: 2,
+        max: 10,
         active: 0,
         selected: []
       }
@@ -145,3 +146,15 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.admin {
+  &__actions {
+    display: flex;
+
+    &__button {
+      text-decoration: none;
+      color: white;
+    }
+  }
+}
+</style>
