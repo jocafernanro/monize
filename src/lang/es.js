@@ -22,9 +22,9 @@ const messages = {
             text: 'El usuario se ha añadido correctamente'
           }
         },
-        button: 'Create',
-        backButton: 'Go back',
-        title: 'Create product'
+        button: 'Crear',
+        backButton: 'Regresar',
+        title: 'Crear producto'
       }
     }
   }
