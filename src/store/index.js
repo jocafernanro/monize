@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import products from './modules/products'
 
 const fb = require('../firebaseConfig')
 
@@ -36,5 +37,6 @@ export default new Vuex.Store({
     }
   },
   modules: {
+    products
   }
 })

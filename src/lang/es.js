@@ -13,6 +13,19 @@ const messages = {
       clickHere: 'Click aquí',
       accept: 'Lo acepto',
       ignoreMe: 'Ignorar'
+    },
+    admin: {
+      create: {
+        notifications: {
+          success: {
+            title: 'Genial! :)',
+            text: 'El usuario se ha añadido correctamente'
+          }
+        },
+        button: 'Crear',
+        backButton: 'Regresar',
+        title: 'Crear producto'
+      }
     }
   }
 }

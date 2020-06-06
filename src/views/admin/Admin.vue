@@ -1,6 +1,11 @@
 
 <template>
-    <div class="center">
+    <div class="center admin">
+      <div class="admin__actions">
+        <vs-button class="admin__actions__button" relief @click="createFakeProduct">Create fake product</vs-button>
+        <router-link class="admin__actions__button" to="/admin/products/create"><vs-button relief>Create</vs-button></router-link>
+
+      </div>
       <vs-table
         v-model="tableConfig.selected"
         >
@@ -11,29 +16,29 @@
           <vs-tr>
             <vs-th>
               <vs-checkbox
-                :indeterminate="tableConfig.selected.length == tableConfig.products.length" v-model="tableConfig.allCheck"
-                @change="tableConfig.selected = $vs.checkAll(tableConfig.selected, tableConfig.products)"
+                :indeterminate="tableConfig.selected.length == products.length" v-model="tableConfig.allCheck"
+                @change="tableConfig.selected = $vs.checkAll(tableConfig.selected, products)"
               />
             </vs-th>
-            <vs-th sort @click="tableConfig.products = $vs.sortData($event ,tableConfig.products, 'name')">
+            <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'name'))">
               Name
             </vs-th>
-            <vs-th sort @click="tableConfig.products = $vs.sortData($event ,tableConfig.products, 'discount')">
+            <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'discount'))">
               discount
             </vs-th>
-            <vs-th sort @click="tableConfig.products = $vs.sortData($event ,tableConfig.products, 'img')">
+            <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'img'))">
               img
             </vs-th>
-            <vs-th sort @click="tableConfig.products = $vs.sortData($event ,tableConfig.products, 'price_normal')">
+            <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'price_normal'))">
               price_normal
             </vs-th>
-            <vs-th sort @click="tableConfig.products = $vs.sortData($event ,tableConfig.products, 'price_offer')">
+            <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'price_offer'))">
               price_offer
             </vs-th>
-            <vs-th sort @click="tableConfig.products = $vs.sortData($event ,tableConfig.products, 'shop')">
+            <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'shop'))">
               shop
             </vs-th>
-            <vs-th sort @click="tableConfig.products = $vs.sortData($event ,tableConfig.products, 'url')">
+            <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'url'))">
               url
             </vs-th>
           </vs-tr>
@@ -41,7 +46,7 @@
         <template #tbody>
           <vs-tr
             :key="i"
-            v-for="(tr, i) in $vs.getPage($vs.getSearch(tableConfig.products, tableConfig.search), tableConfig.page, tableConfig.max)"
+            v-for="(tr, i) in $vs.getPage($vs.getSearch(products, tableConfig.search), tableConfig.page, tableConfig.max)"
             :data="tr"
             :is-selected="!!tableConfig.selected.includes(tr)"
             not-click-selected
@@ -74,7 +79,7 @@
           </vs-tr>
         </template>
         <template #footer>
-          <vs-pagination v-model="tableConfig.page" :length="$vs.getLength($vs.getSearch(tableConfig.products, tableConfig.search), tableConfig.max)" />
+          <vs-pagination v-model="tableConfig.page" :length="$vs.getLength($vs.getSearch(products, tableConfig.search), tableConfig.max)" />
         </template>
       </vs-table>
 
@@ -107,14 +112,10 @@
           </vs-option>
         </vs-select>
       </vs-dialog>
-
-    <vs-button relief @click="createFakeProduct">Create fake product</vs-button>
-
     </div>
 </template>
 <script>
-const fb = require('../firebaseConfig.js')
-const faker = require('faker')
+import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'Admin',
@@ -127,57 +128,33 @@ export default {
         search: '',
         allCheck: false,
         page: 1,
-        max: 2,
+        max: 10,
         active: 0,
-        selected: [],
-        products: []
+        selected: []
       }
     }
   },
-  methods: {
-    async getProducts () {
-      try {
-        const { docs } = await fb.productsCollection.get()
-
-        const products = docs.map(doc => {
-          const { id } = doc
-          const data = doc.data()
-          return { id, ...data }
-        })
-
-        this.$store.commit('setProducts', products)
-        this.tableConfig.products = products
-      } catch (error) {
-        throw new Error('Something gone wrong!')
-      }
-    },
-    async createFakeProduct () {
-      const productName = faker.commerce.productName()
-      const priceNormal = parseFloat(faker.commerce.price())
-      const priceOffer = parseFloat(faker.commerce.price())
-      const image = faker.image.image()
-      const url = faker.internet.url('https://amazon.es')
-
-      await fb.productsCollection
-        .add({
-          name: productName,
-          price_normal: priceNormal,
-          price_offer: priceOffer,
-          discount: parseInt(faker.random.number({
-            min: 10,
-            max: 50
-          })),
-          shop: 'Amazon',
-          img: image,
-          url: url
-        })
-        .then(ref => {
-          console.log('Added document with ID: ', ref.id)
-        })
-    }
-  },
+  computed: mapState({
+    products: state => state.products.all
+  }),
+  methods: mapActions('products', [
+    'updateProducts',
+    'createFakeProduct'
+  ]),
   mounted () {
-    this.getProducts()
+    this.$store.dispatch('products/getProducts')
   }
 }
 </script>
+<style lang="scss" scoped>
+.admin {
+  &__actions {
+    display: flex;
+
+    &__button {
+      text-decoration: none;
+      color: white;
+    }
+  }
+}
+</style>
