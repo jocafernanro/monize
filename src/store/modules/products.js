@@ -100,10 +100,8 @@ const actions = {
   async deleteProducts ({ commit, state }) {
     commit('setPerformingRequest', true)
     const batch = fb.db.batch()
-    console.log(state.productsToDelete)
     for (const product of state.productsToDelete) {
       const toBeDeleted = fb.productsCollection.doc(product.id)
-      console.log(toBeDeleted)
       batch.delete(toBeDeleted)
     }
     await batch.commit()
