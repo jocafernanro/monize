@@ -56,6 +56,21 @@ const messages = {
       spinner: {
         text: 'Cargando chollos...'
       }
+    },
+    footer: {
+      copyright: '© 2020 Monize',
+      aboutUs: {
+        title: 'Sobre nosotros',
+        link: 'Conócenos'
+      },
+      legal: {
+        title: 'Legal',
+        link: 'Políticas de privacidad'
+      },
+      contact: {
+        title: 'Contacto',
+        link: 'monize4dmin@gmail.com'
+      }
     }
   }
 }
