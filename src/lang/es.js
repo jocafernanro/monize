@@ -34,6 +34,11 @@ const messages = {
           }
         }
       }
+    },
+    home: {
+      spinner: {
+        text: 'Cargando chollos...'
+      }
     }
   }
 }

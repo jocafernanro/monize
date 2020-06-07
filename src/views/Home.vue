@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" ref="content">
     <section class="products">
       <ProductItem
         class="products__product-card"
@@ -26,13 +26,29 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'Home',
+  data: () => ({
+    loading: true
+  }),
   components: {
     ProductItem,
     CookieLaw
   },
   computed: mapState({
-    products: state => state.products.all
+    products: state => state.products.all,
+    performingRequest: state => state.products.performingRequest
   }),
+  watch: {
+    performingRequest: function (newValue) {
+      if (newValue) {
+        this.loading = this.$vs.loading({
+          text: this.$t('home.spinner.text'),
+          opacity: 1
+        })
+      } else {
+        this.loading.close()
+      }
+    }
+  },
   mounted () {
     this.$store.dispatch('products/getProducts')
   }

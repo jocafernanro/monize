@@ -1,7 +1,7 @@
 <template>
   <div class="product-item">
-    <div class="product-item__image">
-      <img :src="img" class="product-item__image__img"/>
+    <div class="product-item__image" ref="content">
+      <img :src="img" class="product-item__image__img" @load="closeSpinner"/>
     </div>
     <div class="product-item__discount">{{ discount }}%</div>
     <div class="product-item__footer">
@@ -49,13 +49,23 @@ export default {
   },
   data () {
     return {
-      active: 0
+      active: 0,
+      loading: true
     }
   },
   methods: {
+    closeSpinner () {
+      this.loading.close()
+    }
     // getBrandStyle() {
     //   return 0
     // }
+  },
+  mounted () {
+    this.loading = this.$vs.loading({
+      target: this.$refs.content,
+      opacity: 1
+    })
   }
 }
 </script>
