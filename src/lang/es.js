@@ -25,6 +25,14 @@ const messages = {
         button: 'Crear',
         backButton: 'Regresar',
         title: 'Crear producto'
+      },
+      update: {
+        notifications: {
+          success: {
+            title: 'Genial! :)',
+            text: 'Valor actualizado correctamente'
+          }
+        }
       }
     }
   }
