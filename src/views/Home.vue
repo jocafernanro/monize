@@ -34,7 +34,7 @@ export default {
     CookieLaw
   },
   computed: mapState({
-    products: state => state.products.all,
+    products: state => state.products.activeProducts,
     performingRequest: state => state.products.performingRequest
   }),
   watch: {

@@ -4,6 +4,7 @@ const faker = require('faker')
 // initial state
 const state = () => ({
   all: [],
+  activeProducts: [],
   brands: [],
   performingRequest: false,
   product: parseProduct(),
@@ -24,6 +25,14 @@ const parseProduct = (name = '', active = false, priceNormal, priceOffer, shop =
   }
 }
 
+const parseProducts = (products) => (
+  products.map(doc => {
+    const { id } = doc
+    const data = doc.data()
+    return { id, ...data }
+  })
+)
+
 // getters
 const getters = {}
 
@@ -33,14 +42,10 @@ const actions = {
     commit('setPerformingRequest', true)
     try {
       const { docs } = await fb.productsCollection.get()
-      const filteredProducst = onlyActive ? docs.filter(doc => doc.data().active) : docs
+      const activeProducts = parseProducts(docs.filter(doc => doc.data().active))
+      const products = parseProducts(docs)
 
-      const products = filteredProducst.map(doc => {
-        const { id } = doc
-        const data = doc.data()
-        return { id, ...data }
-      })
-
+      commit('setActiveProducts', activeProducts)
       commit('setProducts', products)
       commit('setPerformingRequest', false)
     } catch (error) {
@@ -138,6 +143,10 @@ const actions = {
 const mutations = {
   setProducts (state, products) {
     state.all = products
+  },
+  setActiveProducts (state, products) {
+    console.log()
+    state.activeProducts = products
   },
   setBrands (state, brands) {
     state.brands = brands
