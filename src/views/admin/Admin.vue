@@ -61,19 +61,19 @@
             <vs-td>
             {{ tr.discount }}
             </vs-td>
-            <vs-td>
+            <vs-td edit @click="edit = tr, tableConfig.editProp = 'img', tableConfig.editActive = true">
             {{ tr.img }}
             </vs-td>
-            <vs-td>
+            <vs-td edit @click="edit = tr, tableConfig.editProp = 'price_normal', tableConfig.editActive = true">
             {{ tr.price_normal }}
             </vs-td>
-            <vs-td>
+            <vs-td edit @click="edit = tr, tableConfig.editProp = 'price_offer', tableConfig.editActive = true">
             {{ tr.price_offer }}
             </vs-td>
-            <vs-td>
+            <vs-td edit @click="edit = tr, tableConfig.editProp = 'shop', tableConfig.editActive = true">
             {{ tr.shop }}
             </vs-td>
-            <vs-td>
+            <vs-td edit @click="edit = tr, tableConfig.editProp = 'url', tableConfig.editActive = true">
             {{ tr.url }}
             </vs-td>
           </vs-tr>
@@ -87,30 +87,23 @@
         <template #header>
             Change Prop {{ tableConfig.editProp }}
         </template>
-        <vs-input @keypress.enter="tableConfig.editActive = false" v-if="tableConfig.editProp == 'email'" v-model="edit[tableConfig.editProp]" />
-        <vs-select @change="tableConfig.editActive = false" block v-if="tableConfig.editProp == 'name'" placeholder="Select" v-model="edit[tableConfig.editProp]">
-          <vs-option label="Vuesax" value="Vuesax">
-            Vuesax
-          </vs-option>
-          <vs-option label="Vue" value="Vuejs">
-            Vue
-          </vs-option>
-          <vs-option label="Javascript" value="Javascript">
-            Javascript
-          </vs-option>
-          <vs-option disabled label="Sass" value="Sass">
-            Sass
-          </vs-option>
-          <vs-option label="Typescript" value="Typescript">
-            Typescript
-          </vs-option>
-          <vs-option label="Webpack" value="Webpack">
-            Webpack
-          </vs-option>
-          <vs-option label="Nodejs" value="Nodejs">
-            Nodejs
-          </vs-option>
-        </vs-select>
+        <vs-input @keypress.enter="updateProduct(edit), tableConfig.editActive = false" v-if="isFieldIncluded(tableConfig.editProp, fields.strings)" v-model="edit[tableConfig.editProp]" />
+        <vs-input type="number" @keypress.enter="updateProduct(edit), tableConfig.editActive = false" v-if="isFieldIncluded(tableConfig.editProp, fields.integers)" v-model="edit[tableConfig.editProp]" />
+        <div class="center con-selects create-product__form__select" v-if="isFieldIncluded(tableConfig.editProp, fields.selects)">
+          <vs-select
+            color="#7d33ff"
+            placeholder="Shop"
+            v-model="edit[tableConfig.editProp]"
+          >
+            <vs-option
+            v-for="(brand, i) in brands"
+            :key="i"
+            :label="brand" :value="brand">
+              {{ brand }}
+            </vs-option>
+          </vs-select>
+        </div>
+         <vs-button class="admin__actions__button" relief @click="updateProduct(edit), tableConfig.editActive = false">Guardar</vs-button>
       </vs-dialog>
     </div>
 </template>
@@ -131,18 +124,59 @@ export default {
         max: 10,
         active: 0,
         selected: []
+      },
+      fields: {
+        strings: [
+          'name',
+          'img',
+          'url'
+        ],
+        integers: [
+          'price_normal',
+          'price_offer'
+        ],
+        selects: [
+          'shop'
+        ]
       }
     }
   },
   computed: mapState({
-    products: state => state.products.all
+    products: state => state.products.all,
+    brands: state => state.products.brands
   }),
-  methods: mapActions('products', [
-    'updateProducts',
-    'createFakeProduct'
-  ]),
+  methods: {
+    ...mapActions('products', [
+      'createFakeProduct',
+      'updateProducts'
+    ]),
+    updateProduct (product) {
+      this.$store.dispatch('products/updateProduct', product)
+        .then(() => {
+          this.$store.dispatch('products/getProducts')
+          this.openNotification(
+            'top-right',
+            'success',
+            this.$t('admin.update.notifications.success.title'),
+            this.$t('admin.update.notifications.success.text'))
+        })
+    },
+    openNotification (position = null, color, title, text) {
+      this.$vs.notification({
+        duration: 2000,
+        color,
+        position,
+        title,
+        text
+      })
+    },
+    isFieldIncluded (field, array) {
+      return array.includes(field)
+    }
+  },
   mounted () {
     this.$store.dispatch('products/getProducts')
+    this.$store.dispatch('products/getBrands')
   }
 }
 </script>

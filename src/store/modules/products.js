@@ -11,8 +11,8 @@ const state = () => ({
 
 const parseProduct = (name = '', priceNormal, priceOffer, shop = '', img = '', url = '') => ({
   name,
-  price_normal: priceNormal,
-  price_offer: priceOffer,
+  price_normal: Number(priceNormal),
+  price_offer: Number(priceOffer),
   discount: parseInt((priceOffer * 100) / priceNormal),
   shop,
   img,
@@ -54,6 +54,17 @@ const actions = {
 
   updateProducts ({ commit }, products) {
     commit('setProducts', products)
+  },
+
+  async updateProduct ({ commit }, product) {
+    return fb.productsCollection.doc(product.id).set(parseProduct(
+      product.name,
+      product.price_normal,
+      product.price_offer,
+      product.shop,
+      product.img,
+      product.url
+    ))
   },
 
   async createProduct ({ commit }, { name, priceNormal, priceOffer, shop, img, url }) {
