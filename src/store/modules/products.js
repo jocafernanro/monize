@@ -145,7 +145,6 @@ const mutations = {
     state.all = products
   },
   setActiveProducts (state, products) {
-    console.log()
     state.activeProducts = products
   },
   setBrands (state, brands) {
