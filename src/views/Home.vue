@@ -34,7 +34,7 @@ export default {
     CookieLaw
   },
   computed: mapState({
-    products: state => state.products.all,
+    products: state => state.products.activeProducts,
     performingRequest: state => state.products.performingRequest
   }),
   watch: {
@@ -50,7 +50,7 @@ export default {
     }
   },
   mounted () {
-    this.$store.dispatch('products/getProducts')
+    this.$store.dispatch('products/getProducts', true)
   }
 }
 </script>

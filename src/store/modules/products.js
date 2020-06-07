@@ -4,6 +4,7 @@ const faker = require('faker')
 // initial state
 const state = () => ({
   all: [],
+  activeProducts: [],
   brands: [],
   performingRequest: false,
   product: parseProduct(),
@@ -11,32 +12,40 @@ const state = () => ({
   productsToDelete: []
 })
 
-const parseProduct = (name = '', priceNormal, priceOffer, shop = '', img = '', url = '') => ({
-  name,
-  price_normal: Number(priceNormal),
-  price_offer: Number(priceOffer),
-  discount: parseInt((priceOffer * 100) / priceNormal),
-  shop,
-  img,
-  url
-})
+const parseProduct = (name = '', active = false, priceNormal, priceOffer, shop = '', img = '', url = '') => {
+  return {
+    name,
+    active,
+    price_normal: parseFloat(priceNormal),
+    price_offer: parseFloat(priceOffer),
+    discount: 100 - parseInt((priceOffer * 100) / priceNormal),
+    shop,
+    img,
+    url
+  }
+}
+
+const parseProducts = (products) => (
+  products.map(doc => {
+    const { id } = doc
+    const data = doc.data()
+    return { id, ...data }
+  })
+)
 
 // getters
 const getters = {}
 
 // actions
 const actions = {
-  async getProducts ({ commit }) {
+  async getProducts ({ commit }, onlyActive) {
     commit('setPerformingRequest', true)
     try {
       const { docs } = await fb.productsCollection.get()
+      const activeProducts = parseProducts(docs.filter(doc => doc.data().active))
+      const products = parseProducts(docs)
 
-      const products = docs.map(doc => {
-        const { id } = doc
-        const data = doc.data()
-        return { id, ...data }
-      })
-
+      commit('setActiveProducts', activeProducts)
       commit('setProducts', products)
       commit('setPerformingRequest', false)
     } catch (error) {
@@ -60,42 +69,56 @@ const actions = {
     commit('setProducts', products)
   },
 
-  async updateProduct ({ commit }, product) {
-    return fb.productsCollection.doc(product.id).set(parseProduct(
+  async updateProduct ({ commit, dispatch }, product) {
+    const parsedProduct = parseProduct(
       product.name,
+      product.active,
       product.price_normal,
       product.price_offer,
       product.shop,
       product.img,
       product.url
-    ))
+    )
+    return fb.productsCollection.doc(product.id).set(parsedProduct).then(() => {
+      dispatch('getProducts')
+    })
   },
 
-  async createProduct ({ commit }, { name, priceNormal, priceOffer, shop, img, url }) {
+  async createProduct ({ commit }, { name, active, priceNormal, priceOffer, shop, img, url }) {
     commit('setPerformingRequest', true)
-    return fb.productsCollection.add(parseProduct(
+    const product = parseProduct(
       name,
+      active,
       priceNormal,
       priceOffer,
       shop,
       img,
       url
-    ))
+    )
+    fb.productsCollection.add(product).then(ref => {
+      console.log('Added document with ID: ', ref.id)
+      commit('addProduct', product)
+      commit('resetProduct', product)
+      commit('setPerformingRequest', false)
+      commit('setPerformingRequest', false)
+    })
   },
 
   async createFakeProduct ({ commit, dispatch }) {
     const productName = faker.commerce.productName()
     const priceNormal = parseFloat(faker.commerce.price())
     const priceOffer = parseFloat(faker.commerce.price())
-    const image = faker.image.image()
+    const img = faker.image.image()
     const url = faker.internet.url('https://amazon.es')
-    const fakeProduct = this.parseProduct(
-      productName,
+    const fakeProduct = {
+      name: productName,
+      active: true,
       priceNormal,
       priceOffer,
-      'Amazon',
-      image,
-      url)
+      shop: 'Amazon',
+      img,
+      url
+    }
     dispatch('createProduct', fakeProduct)
   },
 
@@ -120,6 +143,9 @@ const actions = {
 const mutations = {
   setProducts (state, products) {
     state.all = products
+  },
+  setActiveProducts (state, products) {
+    state.activeProducts = products
   },
   setBrands (state, brands) {
     state.brands = brands

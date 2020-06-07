@@ -16,6 +16,11 @@
         >
         </vs-input>
 
+        <vs-checkbox
+          class="create-product__form__input"
+          color="#7d33ff"
+          v-model="product.active">Active</vs-checkbox>
+
         <vs-input
           class="create-product__form__input"
           color="#7d33ff"
@@ -75,16 +80,11 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   data: () => ({
-    loading: undefined,
-    shops: [
-      'Amazon',
-      'PCComponentes',
-      'Aliexpress'
-    ]
+    loading: undefined
   }),
   computed: {
     ...mapState({
@@ -94,22 +94,9 @@ export default {
     })
   },
   methods: {
-    createProduct (product) {
-      this.openLoading()
-      this.$store.dispatch('products/createProduct', product)
-        .then(ref => {
-          console.log('Added document with ID: ', ref.id)
-          this.$store.commit('products/addProduct', product)
-          this.$store.commit('products/resetProduct', product)
-          this.$store.commit('products/setPerformingRequest', false)
-          this.loading.close()
-          this.openNotification(
-            'top-right',
-            'success',
-            this.$t('admin.create.notifications.success.title'),
-            this.$t('admin.create.notifications.success.text'))
-        })
-    },
+    ...mapActions('products', [
+      'createProduct'
+    ]),
     openNotification (position = null, color, title, text) {
       this.$vs.notification({
         duration: 2000,
@@ -118,9 +105,20 @@ export default {
         title,
         text
       })
-    },
-    openLoading () {
-      this.loading = this.$vs.loading()
+    }
+  },
+  watch: {
+    performingRequest: function (newValue) {
+      if (newValue) {
+        this.loading = this.$vs.loading()
+      } else {
+        this.loading.close()
+        this.openNotification(
+          'top-right',
+          'success',
+          this.$t('admin.create.notifications.success.title'),
+          this.$t('admin.create.notifications.success.text'))
+      }
     }
   },
   mounted () {
