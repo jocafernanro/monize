@@ -23,6 +23,9 @@
             <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'name'))">
               Name
             </vs-th>
+            <vs-th>
+              Active
+            </vs-th>
             <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'discount'))">
               discount
             </vs-th>
@@ -57,6 +60,9 @@
             </vs-td>
             <vs-td edit @click="edit = tr, tableConfig.editProp = 'name', tableConfig.editActive = true">
               {{ tr.name }}
+            </vs-td>
+             <vs-td checkbox>
+              <vs-checkbox @change="updateProduct(tr)" v-model="tr.active" />
             </vs-td>
             <vs-td>
             {{ tr.discount }}
@@ -143,24 +149,15 @@ export default {
   },
   computed: mapState({
     products: state => state.products.all,
-    brands: state => state.products.brands
+    brands: state => state.products.brands,
+    performingRequest: state => state.products.performingRequest
   }),
   methods: {
     ...mapActions('products', [
       'createFakeProduct',
-      'updateProducts'
+      'updateProducts',
+      'updateProduct'
     ]),
-    updateProduct (product) {
-      this.$store.dispatch('products/updateProduct', product)
-        .then(() => {
-          this.$store.dispatch('products/getProducts')
-          this.openNotification(
-            'top-right',
-            'success',
-            this.$t('admin.update.notifications.success.title'),
-            this.$t('admin.update.notifications.success.text'))
-        })
-    },
     openNotification (position = null, color, title, text) {
       this.$vs.notification({
         duration: 2000,
@@ -172,6 +169,17 @@ export default {
     },
     isFieldIncluded (field, array) {
       return array.includes(field)
+    }
+  },
+  watch: {
+    performingRequest: function (newValue, oldValue) {
+      if (!newValue && oldValue) {
+        this.openNotification(
+          'top-right',
+          'success',
+          this.$t('admin.update.notifications.success.title'),
+          this.$t('admin.update.notifications.success.text'))
+      }
     }
   },
   mounted () {

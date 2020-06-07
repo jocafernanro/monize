@@ -50,7 +50,7 @@ export default {
     }
   },
   mounted () {
-    this.$store.dispatch('products/getProducts')
+    this.$store.dispatch('products/getProducts', true)
   }
 }
 </script>
