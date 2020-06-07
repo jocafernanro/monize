@@ -97,6 +97,19 @@ const actions = {
     dispatch('createProduct', fakeProduct)
   },
 
+  async deleteProducts ({ commit, state }) {
+    commit('setPerformingRequest', true)
+    const batch = fb.db.batch()
+    console.log(state.productsToDelete)
+    for (const product of state.productsToDelete) {
+      const toBeDeleted = fb.productsCollection.doc(product.id)
+      console.log(toBeDeleted)
+      batch.delete(toBeDeleted)
+    }
+    await batch.commit()
+    commit('setPerformingRequest', false)
+  },
+
   performingProductDelete ({ commit }, { status, products }) {
     commit('setPerformingProductDelete', status)
     status ? commit('setProductsToDelete', products) : commit('resetProductsToDelete')

@@ -31,8 +31,8 @@
 
     <template #footer>
       <div class="delete-dialog__footer">
-        <vs-button danger floating>{{ $t('admin.delete.notifications.confirmation.yes') }}</vs-button>
-        <vs-button danger border @click="stopPerformingProductDelete">{{ $t('admin.delete.notifications.confirmation.cancel') }}</vs-button>
+        <vs-button danger floating @click="deleteProducts">{{ $t('admin.delete.notifications.confirmation.yes') }}</vs-button>
+        <vs-button danger border @click="stopPerformingProductDelete(productsToDelete)">{{ $t('admin.delete.notifications.confirmation.cancel') }}</vs-button>
       </div>
     </template>
   </vs-dialog>
@@ -65,6 +65,27 @@ export default {
     ...mapMutations('products', ['setProductsToDelete']),
     stopPerformingProductDelete () {
       this.$store.dispatch('products/performingProductDelete', { status: false })
+    },
+    deleteProducts (productsToDelete) {
+      this.$store.dispatch('products/deleteProducts', productsToDelete).then(() => {
+        this.$store.dispatch('products/getProducts')
+        this.openNotification(
+          'top-right',
+          'success',
+          this.$t('admin.delete.notifications.success.title'),
+          this.$t('admin.delete.notifications.success.text')
+        )
+      })
+      this.$store.dispatch('products/performingProductDelete', { status: false })
+    },
+    openNotification (position = null, color, title, text) {
+      this.$vs.notification({
+        duration: 2000,
+        color,
+        position,
+        title,
+        text
+      })
     }
   }
 }

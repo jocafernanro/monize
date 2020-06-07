@@ -11,7 +11,13 @@
         <vs-button relief>{{ $t("admin.create.button") }}</vs-button>
       </router-link>
       <vs-button
-        v-show="tableConfig.selected.length > 0"
+        danger
+        relief
+        @click="performingProductDelete( {status: true, products: products} )"
+      >{{ $t("admin.delete.buttonAll") }}</vs-button>
+      <vs-button
+        danger
+        :disabled="tableConfig.selected.length <= 0"
         relief
         @click="performingProductDelete( {status: true, products: tableConfig.selected} )"
       >{{ $t("admin.delete.button") }}</vs-button>
@@ -61,11 +67,26 @@
             @click="edit = tr, tableConfig.editProp = 'name', tableConfig.editActive = true"
           >{{ tr.name }}</vs-td>
           <vs-td>{{ tr.discount }}</vs-td>
-          <vs-td>{{ tr.img }}</vs-td>
-          <vs-td>{{ tr.price_normal }}</vs-td>
-          <vs-td>{{ tr.price_offer }}</vs-td>
-          <vs-td>{{ tr.shop }}</vs-td>
-          <vs-td>{{ tr.url }}</vs-td>
+          <vs-td
+            edit
+            @click="edit = tr, tableConfig.editProp = 'img', tableConfig.editActive = true"
+          >{{ tr.img }}</vs-td>
+          <vs-td
+            edit
+            @click="edit = tr, tableConfig.editProp = 'price_normal', tableConfig.editActive = true"
+          >{{ tr.price_normal }}</vs-td>
+          <vs-td
+            edit
+            @click="edit = tr, tableConfig.editProp = 'price_offer', tableConfig.editActive = true"
+          >{{ tr.price_offer }}</vs-td>
+          <vs-td
+            edit
+            @click="edit = tr, tableConfig.editProp = 'shop', tableConfig.editActive = true"
+          >{{ tr.shop }}</vs-td>
+          <vs-td
+            edit
+            @click="edit = tr, tableConfig.editProp = 'url', tableConfig.editActive = true"
+          >{{ tr.url }}</vs-td>
         </vs-tr>
       </template>
       <template #footer>
@@ -79,26 +100,31 @@
     <vs-dialog v-model="tableConfig.editActive">
       <template #header>Change Prop {{ tableConfig.editProp }}</template>
       <vs-input
-        @keypress.enter="tableConfig.editActive = false"
-        v-if="tableConfig.editProp == 'email'"
+        @keypress.enter="updateProduct(edit), tableConfig.editActive = false"
+        v-if="isFieldIncluded(tableConfig.editProp, fields.strings)"
         v-model="edit[tableConfig.editProp]"
       />
-      <vs-select
-        @change="tableConfig.editActive = false"
-        block
-        v-if="tableConfig.editProp == 'name'"
-        placeholder="Select"
+      <vs-input
+        type="number"
+        @keypress.enter="updateProduct(edit), tableConfig.editActive = false"
+        v-if="isFieldIncluded(tableConfig.editProp, fields.integers)"
         v-model="edit[tableConfig.editProp]"
+      />
+      <div
+        class="center con-selects create-product__form__select"
+        v-if="isFieldIncluded(tableConfig.editProp, fields.selects)"
       >
-        <vs-option label="Vuesax" value="Vuesax">Vuesax</vs-option>
-        <vs-option label="Vue" value="Vuejs">Vue</vs-option>
-        <vs-option label="Javascript" value="Javascript">Javascript</vs-option>
-        <vs-option disabled label="Sass" value="Sass">Sass</vs-option>
-        <vs-option label="Typescript" value="Typescript">Typescript</vs-option>
-        <vs-option label="Webpack" value="Webpack">Webpack</vs-option>
-        <vs-option label="Nodejs" value="Nodejs">Nodejs</vs-option>
-      </vs-select>
+        <vs-select color="#7d33ff" placeholder="Shop" v-model="edit[tableConfig.editProp]">
+          <vs-option v-for="(brand, i) in brands" :key="i" :label="brand" :value="brand">{{ brand }}</vs-option>
+        </vs-select>
+      </div>
+      <vs-button
+        class="admin__actions__button"
+        relief
+        @click="updateProduct(edit), tableConfig.editActive = false"
+      >Guardar</vs-button>
     </vs-dialog>
+
     <DeleteProductDialog></DeleteProductDialog>
   </div>
 </template>
