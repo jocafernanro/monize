@@ -1,5 +1,10 @@
 <template>
   <div class="home">
+    <transition name="fade">
+      <div v-if="performingRequest" class="loading">
+        <p>Loading...</p>
+      </div>
+    </transition>
     <section class="products">
       <ProductItem
         class="products__product-card"
@@ -31,7 +36,8 @@ export default {
     CookieLaw
   },
   computed: mapState({
-    products: state => state.products.all
+    products: state => state.products.all,
+    performingRequest: state => state.products.performingRequest
   }),
   mounted () {
     this.$store.dispatch('products/getProducts')
