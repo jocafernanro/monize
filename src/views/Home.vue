@@ -1,10 +1,5 @@
 <template>
-  <div class="home">
-    <transition name="fade">
-      <div v-if="performingRequest" class="loading">
-        <p>Loading...</p>
-      </div>
-    </transition>
+  <div class="home" ref="content">
     <section class="products">
       <ProductItem
         class="products__product-card"
@@ -31,6 +26,9 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'Home',
+  data: () => ({
+    loading: true
+  }),
   components: {
     ProductItem,
     CookieLaw
@@ -39,6 +37,18 @@ export default {
     products: state => state.products.all,
     performingRequest: state => state.products.performingRequest
   }),
+  watch: {
+    performingRequest: function (newValue) {
+      if (newValue) {
+        this.loading = this.$vs.loading({
+          text: this.$t('home.spinner.text'),
+          opacity: 1
+        })
+      } else {
+        this.loading.close()
+      }
+    }
+  },
   mounted () {
     this.$store.dispatch('products/getProducts')
   }

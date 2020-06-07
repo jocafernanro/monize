@@ -25,6 +25,7 @@ const getters = {}
 // actions
 const actions = {
   async getProducts ({ commit }) {
+    commit('setPerformingRequest', true)
     try {
       const { docs } = await fb.productsCollection.get()
 
@@ -35,6 +36,7 @@ const actions = {
       })
 
       commit('setProducts', products)
+      commit('setPerformingRequest', false)
     } catch (error) {
       throw new Error('Something gone wrong!')
     }
