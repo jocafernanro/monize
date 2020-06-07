@@ -87,9 +87,9 @@
         <template #header>
             Change Prop {{ tableConfig.editProp }}
         </template>
-        <vs-input @keypress.enter="updateProduct(edit), tableConfig.editActive = false" v-if="isTextField(tableConfig.editProp)" v-model="edit[tableConfig.editProp]" />
-        <vs-input type="number" @keypress.enter="updateProduct(edit), tableConfig.editActive = false" v-if="tableConfig.editProp == 'price_normal' || tableConfig.editProp == 'price_offer'" v-model="edit[tableConfig.editProp]" />
-        <div class="center con-selects create-product__form__select" v-if="tableConfig.editProp == 'shop'">
+        <vs-input @keypress.enter="updateProduct(edit), tableConfig.editActive = false" v-if="isFieldIncluded(tableConfig.editProp, fields.strings)" v-model="edit[tableConfig.editProp]" />
+        <vs-input type="number" @keypress.enter="updateProduct(edit), tableConfig.editActive = false" v-if="isFieldIncluded(tableConfig.editProp, fields.integers)" v-model="edit[tableConfig.editProp]" />
+        <div class="center con-selects create-product__form__select" v-if="isFieldIncluded(tableConfig.editProp, fields.selects)">
           <vs-select
             color="#7d33ff"
             placeholder="Shop"
@@ -125,11 +125,20 @@ export default {
         active: 0,
         selected: []
       },
-      textFields: [
-        'name',
-        'img',
-        'url'
-      ]
+      fields: {
+        strings: [
+          'name',
+          'img',
+          'url'
+        ],
+        integers: [
+          'price_normal',
+          'price_offer'
+        ],
+        selects: [
+          'shop'
+        ]
+      }
     }
   },
   computed: mapState({
@@ -161,8 +170,8 @@ export default {
         text
       })
     },
-    isTextField (field) {
-      return this.textFields.includes(field)
+    isFieldIncluded (field, array) {
+      return array.includes(field)
     }
   },
   mounted () {
