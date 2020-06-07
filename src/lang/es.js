@@ -23,8 +23,25 @@ const messages = {
           }
         },
         button: 'Crear',
+        fake: 'Crear producto fake',
         backButton: 'Regresar',
         title: 'Crear producto'
+      },
+      delete: {
+        notifications: {
+          confirmation: {
+            title: 'Estás a punto de borrar los productos seleccionados',
+            text: '¿Estás seguro de continuar?',
+            yes: 'Sí',
+            cancel: 'Cancelar'
+          },
+          success: {
+            title: '¡Éxito!',
+            text: 'El/los productos seleccionados se han borrado con éxito'
+          }
+        },
+        button: 'Borrar',
+        buttonAll: 'Borrar todos'
       }
     }
   }

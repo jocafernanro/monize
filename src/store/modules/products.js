@@ -6,7 +6,9 @@ const state = () => ({
   all: [],
   brands: [],
   performingRequest: false,
-  product: parseProduct()
+  product: parseProduct(),
+  isPerformingProductDelete: false,
+  productsToDelete: []
 })
 
 const parseProduct = (name = '', priceNormal, priceOffer, shop = '', img = '', url = '') => ({
@@ -82,6 +84,12 @@ const actions = {
       image,
       url)
     dispatch('createProduct', fakeProduct)
+  },
+
+  performingProductDelete ({ commit }, { status, products }) {
+    console.log(status)
+    commit('setPerformingProductDelete', status)
+    status ? commit('setProductsToDelete', products) : commit('resetProductsToDelete')
   }
 }
 
@@ -101,6 +109,15 @@ const mutations = {
   },
   resetProduct (state, status) {
     state.product = parseProduct()
+  },
+  setPerformingProductDelete (state, status) {
+    state.isPerformingProductDelete = status
+  },
+  setProductsToDelete (state, products) {
+    state.productsToDelete = products
+  },
+  resetProductsToDelete (state) {
+    state.productsToDelete = []
   }
 }
 

@@ -1,124 +1,118 @@
 
 <template>
-    <div class="center admin">
-      <div class="admin__actions">
-        <vs-button class="admin__actions__button" relief @click="createFakeProduct">Create fake product</vs-button>
-        <router-link class="admin__actions__button" to="/admin/products/create"><vs-button relief>Create</vs-button></router-link>
-
-      </div>
-      <vs-table
-        v-model="tableConfig.selected"
-        >
-        <template #header>
-          <vs-input v-model="tableConfig.search" border placeholder="Search" />
-        </template>
-        <template #thead>
-          <vs-tr>
-            <vs-th>
-              <vs-checkbox
-                :indeterminate="tableConfig.selected.length == products.length" v-model="tableConfig.allCheck"
-                @change="tableConfig.selected = $vs.checkAll(tableConfig.selected, products)"
-              />
-            </vs-th>
-            <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'name'))">
-              Name
-            </vs-th>
-            <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'discount'))">
-              discount
-            </vs-th>
-            <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'img'))">
-              img
-            </vs-th>
-            <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'price_normal'))">
-              price_normal
-            </vs-th>
-            <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'price_offer'))">
-              price_offer
-            </vs-th>
-            <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'shop'))">
-              shop
-            </vs-th>
-            <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'url'))">
-              url
-            </vs-th>
-          </vs-tr>
-        </template>
-        <template #tbody>
-          <vs-tr
-            :key="i"
-            v-for="(tr, i) in $vs.getPage($vs.getSearch(products, tableConfig.search), tableConfig.page, tableConfig.max)"
-            :data="tr"
-            :is-selected="!!tableConfig.selected.includes(tr)"
-            not-click-selected
-            open-expand-only-td
-          >
-            <vs-td checkbox>
-              <vs-checkbox :val="tr" v-model="tableConfig.selected" />
-            </vs-td>
-            <vs-td edit @click="edit = tr, tableConfig.editProp = 'name', tableConfig.editActive = true">
-              {{ tr.name }}
-            </vs-td>
-            <vs-td>
-            {{ tr.discount }}
-            </vs-td>
-            <vs-td>
-            {{ tr.img }}
-            </vs-td>
-            <vs-td>
-            {{ tr.price_normal }}
-            </vs-td>
-            <vs-td>
-            {{ tr.price_offer }}
-            </vs-td>
-            <vs-td>
-            {{ tr.shop }}
-            </vs-td>
-            <vs-td>
-            {{ tr.url }}
-            </vs-td>
-          </vs-tr>
-        </template>
-        <template #footer>
-          <vs-pagination v-model="tableConfig.page" :length="$vs.getLength($vs.getSearch(products, tableConfig.search), tableConfig.max)" />
-        </template>
-      </vs-table>
-
-      <vs-dialog v-model="tableConfig.editActive">
-        <template #header>
-            Change Prop {{ tableConfig.editProp }}
-        </template>
-        <vs-input @keypress.enter="tableConfig.editActive = false" v-if="tableConfig.editProp == 'email'" v-model="edit[tableConfig.editProp]" />
-        <vs-select @change="tableConfig.editActive = false" block v-if="tableConfig.editProp == 'name'" placeholder="Select" v-model="edit[tableConfig.editProp]">
-          <vs-option label="Vuesax" value="Vuesax">
-            Vuesax
-          </vs-option>
-          <vs-option label="Vue" value="Vuejs">
-            Vue
-          </vs-option>
-          <vs-option label="Javascript" value="Javascript">
-            Javascript
-          </vs-option>
-          <vs-option disabled label="Sass" value="Sass">
-            Sass
-          </vs-option>
-          <vs-option label="Typescript" value="Typescript">
-            Typescript
-          </vs-option>
-          <vs-option label="Webpack" value="Webpack">
-            Webpack
-          </vs-option>
-          <vs-option label="Nodejs" value="Nodejs">
-            Nodejs
-          </vs-option>
-        </vs-select>
-      </vs-dialog>
+  <div class="center admin">
+    <div class="admin__actions">
+      <vs-button
+        class="admin__actions__button"
+        relief
+        @click="createFakeProduct"
+      >{{ $t("admin.create.fake") }}</vs-button>
+      <router-link class="admin__actions__button" to="/admin/products/create">
+        <vs-button relief>{{ $t("admin.create.button") }}</vs-button>
+      </router-link>
+      <vs-button
+        v-show="tableConfig.selected.length > 0"
+        relief
+        @click="performingProductDelete( {status: true, products: tableConfig.selected} )"
+      >{{ $t("admin.delete.button") }}</vs-button>
     </div>
+    <vs-table v-model="tableConfig.selected">
+      <template #header>
+        <vs-input v-model="tableConfig.search" border placeholder="Search" />
+      </template>
+      <template #thead>
+        <vs-tr>
+          <vs-th>
+            <vs-checkbox
+              :indeterminate="tableConfig.selected.length == products.length"
+              v-model="tableConfig.allCheck"
+              @change="tableConfig.selected = $vs.checkAll(tableConfig.selected, products)"
+            />
+          </vs-th>
+          <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'name'))">Name</vs-th>
+          <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'discount'))">discount</vs-th>
+          <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'img'))">img</vs-th>
+          <vs-th
+            sort
+            @click="updateProducts($vs.sortData($event ,products, 'price_normal'))"
+          >price_normal</vs-th>
+          <vs-th
+            sort
+            @click="updateProducts($vs.sortData($event ,products, 'price_offer'))"
+          >price_offer</vs-th>
+          <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'shop'))">shop</vs-th>
+          <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'url'))">url</vs-th>
+        </vs-tr>
+      </template>
+      <template #tbody>
+        <vs-tr
+          :key="i"
+          v-for="(tr, i) in $vs.getPage($vs.getSearch(products, tableConfig.search), tableConfig.page, tableConfig.max)"
+          :data="tr"
+          :is-selected="!!tableConfig.selected.includes(tr)"
+          not-click-selected
+          open-expand-only-td
+        >
+          <vs-td checkbox>
+            <vs-checkbox :val="tr" v-model="tableConfig.selected" />
+          </vs-td>
+          <vs-td
+            edit
+            @click="edit = tr, tableConfig.editProp = 'name', tableConfig.editActive = true"
+          >{{ tr.name }}</vs-td>
+          <vs-td>{{ tr.discount }}</vs-td>
+          <vs-td>{{ tr.img }}</vs-td>
+          <vs-td>{{ tr.price_normal }}</vs-td>
+          <vs-td>{{ tr.price_offer }}</vs-td>
+          <vs-td>{{ tr.shop }}</vs-td>
+          <vs-td>{{ tr.url }}</vs-td>
+        </vs-tr>
+      </template>
+      <template #footer>
+        <vs-pagination
+          v-model="tableConfig.page"
+          :length="$vs.getLength($vs.getSearch(products, tableConfig.search), tableConfig.max)"
+        />
+      </template>
+    </vs-table>
+
+    <vs-dialog v-model="tableConfig.editActive">
+      <template #header>Change Prop {{ tableConfig.editProp }}</template>
+      <vs-input
+        @keypress.enter="tableConfig.editActive = false"
+        v-if="tableConfig.editProp == 'email'"
+        v-model="edit[tableConfig.editProp]"
+      />
+      <vs-select
+        @change="tableConfig.editActive = false"
+        block
+        v-if="tableConfig.editProp == 'name'"
+        placeholder="Select"
+        v-model="edit[tableConfig.editProp]"
+      >
+        <vs-option label="Vuesax" value="Vuesax">Vuesax</vs-option>
+        <vs-option label="Vue" value="Vuejs">Vue</vs-option>
+        <vs-option label="Javascript" value="Javascript">Javascript</vs-option>
+        <vs-option disabled label="Sass" value="Sass">Sass</vs-option>
+        <vs-option label="Typescript" value="Typescript">Typescript</vs-option>
+        <vs-option label="Webpack" value="Webpack">Webpack</vs-option>
+        <vs-option label="Nodejs" value="Nodejs">Nodejs</vs-option>
+      </vs-select>
+    </vs-dialog>
+
+    <DeleteProductDialog></DeleteProductDialog>
+
+  </div>
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
+import DeleteProductDialog from '../../components/admin/DeleteProductDialog'
 
 export default {
   name: 'Admin',
+  components: {
+    DeleteProductDialog
+  },
   data: () => {
     return {
       tableConfig: {
@@ -137,10 +131,7 @@ export default {
   computed: mapState({
     products: state => state.products.all
   }),
-  methods: mapActions('products', [
-    'updateProducts',
-    'createFakeProduct'
-  ]),
+  methods: mapActions('products', ['updateProducts', 'createFakeProduct', 'performingProductDelete']),
   mounted () {
     this.$store.dispatch('products/getProducts')
   }
