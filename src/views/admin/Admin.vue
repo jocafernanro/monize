@@ -87,7 +87,7 @@
         <template #header>
             Change Prop {{ tableConfig.editProp }}
         </template>
-        <vs-input @keypress.enter="updateProduct(edit), tableConfig.editActive = false" v-if="tableConfig.editProp == 'name' || tableConfig.editProp == 'img' || tableConfig.editProp == 'url'" v-model="edit[tableConfig.editProp]" />
+        <vs-input @keypress.enter="updateProduct(edit), tableConfig.editActive = false" v-if="isTextField(tableConfig.editProp)" v-model="edit[tableConfig.editProp]" />
         <vs-input type="number" @keypress.enter="updateProduct(edit), tableConfig.editActive = false" v-if="tableConfig.editProp == 'price_normal' || tableConfig.editProp == 'price_offer'" v-model="edit[tableConfig.editProp]" />
         <div class="center con-selects create-product__form__select" v-if="tableConfig.editProp == 'shop'">
           <vs-select
@@ -124,7 +124,12 @@ export default {
         max: 10,
         active: 0,
         selected: []
-      }
+      },
+      textFields: [
+        'name',
+        'img',
+        'url'
+      ]
     }
   },
   computed: mapState({
@@ -155,6 +160,9 @@ export default {
         title,
         text
       })
+    },
+    isTextField (field) {
+      return this.textFields.includes(field)
     }
   },
   mounted () {
