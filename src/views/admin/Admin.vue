@@ -162,7 +162,7 @@ export default {
   computed: mapState({
     products: state => state.products.all,
     brands: state => state.products.brands,
-    performingRequest: state => state.products.performingRequest
+    isPerformingProductUpdate: state => state.products.isPerformingProductUpdate
   }),
   methods: {
     ...mapActions('products', [
@@ -185,7 +185,7 @@ export default {
     }
   },
   watch: {
-    performingRequest: function (newValue, oldValue) {
+    isPerformingProductUpdate: function (newValue, oldValue) {
       if (!newValue && oldValue) {
         this.openNotification(
           'top-right',
