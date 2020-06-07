@@ -42,6 +42,14 @@ const messages = {
         },
         button: 'Borrar',
         buttonAll: 'Borrar todos'
+      },
+      update: {
+        notifications: {
+          success: {
+            title: 'Genial! :)',
+            text: 'Valor actualizado correctamente'
+          }
+        }
       }
     }
   }

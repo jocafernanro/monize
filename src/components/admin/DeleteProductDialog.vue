@@ -56,7 +56,7 @@ export default {
         return this.$store.state.products.isPerformingProductDelete
       },
       set (value) {
-        this.$store.dispatch('products/PerformingProductDelete', value)
+        this.$store.dispatch('products/performingProductDelete', value)
       }
     }
   },

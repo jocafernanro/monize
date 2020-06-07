@@ -99,9 +99,7 @@
         <vs-option label="Nodejs" value="Nodejs">Nodejs</vs-option>
       </vs-select>
     </vs-dialog>
-
     <DeleteProductDialog></DeleteProductDialog>
-
   </div>
 </template>
 <script>
@@ -125,15 +123,51 @@ export default {
         max: 10,
         active: 0,
         selected: []
+      },
+      fields: {
+        strings: ['name', 'img', 'url'],
+        integers: ['price_normal', 'price_offer'],
+        selects: ['shop']
       }
     }
   },
   computed: mapState({
-    products: state => state.products.all
+    products: state => state.products.all,
+    brands: state => state.products.brands
   }),
-  methods: mapActions('products', ['updateProducts', 'createFakeProduct', 'performingProductDelete']),
+  methods: {
+    ...mapActions('products', [
+      'createFakeProduct',
+      'updateProducts',
+      'performingProductDelete'
+    ]),
+    updateProduct (product) {
+      this.$store.dispatch('products/updateProduct', product).then(() => {
+        this.$store.dispatch('products/getProducts')
+        this.openNotification(
+          'top-right',
+          'success',
+          this.$t('admin.update.notifications.success.title'),
+          this.$t('admin.update.notifications.success.text')
+        )
+      })
+    },
+    openNotification (position = null, color, title, text) {
+      this.$vs.notification({
+        duration: 2000,
+        color,
+        position,
+        title,
+        text
+      })
+    },
+    isFieldIncluded (field, array) {
+      return array.includes(field)
+    }
+  },
   mounted () {
     this.$store.dispatch('products/getProducts')
+    this.$store.dispatch('products/getBrands')
   }
 }
 </script>
