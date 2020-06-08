@@ -1,10 +1,10 @@
 <template>
   <div class="notFound center">
+    <h1 class="notFound__title">
+      {{ $t("notFound.title") }}
+    </h1>
     <img class="notFound__img" src="../assets/images/404.png">
     <section class="notFound__info">
-      <h1 class="notFound__info__title">
-        {{ $t("notFound.title") }}
-      </h1>
       <vs-button
           size="xl"
           border
@@ -25,31 +25,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/*  .notFound {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    margin-top: 1.5em;
-    &__info, &__button{
-      display: grid;
-    }
-  }*/
-
   .notFound{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
     position: relative;
-    text-align: center;
+
+    &__title{
+      margin: 0;
+      text-shadow: 0.5px .5px 2px #000000;
+      text-align: center;
+    }
 
     &__info{
       position: absolute;
-      top: 50%;
-      left: 50%;
+      top: 75%;
+      left: 20%;
       transform: translate(-50%, -50%);
-
-      &__title{
-        font-size: 2rem;
-        margin-top: 8rem;
-      }
     }
   }
 
