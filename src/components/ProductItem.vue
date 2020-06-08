@@ -81,7 +81,6 @@ export default {
     // }
   },
   mounted () {
-    moment.locale('es')
     this.loading = this.$vs.loading({
       target: this.$refs.content,
       opacity: 1
