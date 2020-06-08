@@ -9,6 +9,7 @@ const state = () => ({
   performingRequest: false,
   product: parseProduct(),
   isPerformingProductDelete: false,
+  isPerformingProductUpdate: false,
   productsToDelete: []
 })
 
@@ -70,6 +71,7 @@ const actions = {
   },
 
   async updateProduct ({ commit, dispatch }, product) {
+    commit('setPerformingProductUpdate', true)
     const parsedProduct = parseProduct(
       product.name,
       product.active,
@@ -80,6 +82,7 @@ const actions = {
       product.url
     )
     return fb.productsCollection.doc(product.id).set(parsedProduct).then(() => {
+      commit('setPerformingProductUpdate', false)
       dispatch('getProducts')
     })
   },
@@ -161,6 +164,9 @@ const mutations = {
   },
   setPerformingProductDelete (state, status) {
     state.isPerformingProductDelete = status
+  },
+  setPerformingProductUpdate (state, status) {
+    state.isPerformingProductUpdate = status
   },
   setProductsToDelete (state, products) {
     state.productsToDelete = products
