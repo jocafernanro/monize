@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import firebase from 'firebase'
 
 import Home from '../views/Home.vue'
+import NotFound from '../components/NotFound'
 import Login from '../views/auth/Login.vue'
 
 Vue.use(VueRouter)
@@ -20,6 +21,11 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  },
+  {
+    path: '/legal',
+    name: 'Legal',
+    component: () => import(/* webpackChunkName: "legal" */ '../views/Legal.vue')
   },
   {
     path: '/login',
@@ -41,6 +47,15 @@ const routes = [
       requiresAuth: true
     },
     component: () => import('../views/admin/CreateProduct.vue')
+  },
+  {
+    path: '/not-found',
+    name: '404',
+    component: NotFound
+  },
+  {
+    path: '*',
+    redirect: { name: '404' }
   }
 ]
 
