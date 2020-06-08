@@ -1,3 +1,4 @@
+import * as moment from 'moment'
 const fb = require('../../firebaseConfig.js')
 const faker = require('faker')
 
@@ -12,7 +13,8 @@ const state = () => ({
   productsToDelete: []
 })
 
-const parseProduct = (name = '', active = false, priceNormal, priceOffer, shop = '', img = '', url = '') => {
+const parseProduct = (name = '', active = false, priceNormal, priceOffer, shop = '', img = '', url = '', shipping = 0) => {
+  const date = moment()
   return {
     name,
     active,
@@ -21,7 +23,9 @@ const parseProduct = (name = '', active = false, priceNormal, priceOffer, shop =
     discount: 100 - parseInt((priceOffer * 100) / priceNormal),
     shop,
     img,
-    url
+    url,
+    date: date.valueOf(),
+    shipping: parseFloat(shipping)
   }
 }
 
@@ -77,14 +81,15 @@ const actions = {
       product.price_offer,
       product.shop,
       product.img,
-      product.url
+      product.url,
+      product.shipping
     )
     return fb.productsCollection.doc(product.id).set(parsedProduct).then(() => {
       dispatch('getProducts')
     })
   },
 
-  async createProduct ({ commit }, { name, active, priceNormal, priceOffer, shop, img, url }) {
+  async createProduct ({ commit }, { name, active, priceNormal, priceOffer, shop, img, url, shipping }) {
     commit('setPerformingRequest', true)
     const product = parseProduct(
       name,
@@ -93,7 +98,8 @@ const actions = {
       priceOffer,
       shop,
       img,
-      url
+      url,
+      shipping
     )
     fb.productsCollection.add(product).then(ref => {
       console.log('Added document with ID: ', ref.id)

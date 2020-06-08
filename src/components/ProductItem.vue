@@ -16,11 +16,18 @@
             </div>
           </div>
           <div class="product-item__footer__product__shop">
-            <p :class="`product-item__footer__product__shop shop shop--${shop.toLowerCase()}`">{{ shop }}</p>
+            <p class="product-item__footer__product__shop shop">{{ shop }}</p>
 
           </div>
         </div>
         <h4 class="product-item__footer__info__title">{{ name }}</h4>
+        <div class="product-item__footer__info__first">
+          <p class="product-item__footer__info__first__left">{{ formatDate(date) }}</p>
+          <p class="product-item__footer__info__first__right">
+            <i class='bx bxs-truck product-item__footer__info__first__right__icon'></i>
+            <span class="product-item__footer__info__first__right__label">{{ getShipping(shipping) }}</span>
+          </p>
+        </div>
       </div>
 
     </div>
@@ -36,6 +43,10 @@
 
 <script>
 
+import moment from 'moment'
+import 'moment/locale/es'
+moment.locale('es')
+
 export default {
   name: 'ProductItem',
   props: {
@@ -45,7 +56,9 @@ export default {
     price_normal: Number,
     url: String,
     name: String,
-    shop: String
+    shop: String,
+    date: Number,
+    shipping: Number
   },
   data () {
     return {
@@ -56,12 +69,19 @@ export default {
   methods: {
     closeSpinner () {
       this.loading.close()
+    },
+    formatDate (date) {
+      return moment(date).fromNow()
+    },
+    getShipping (shipping) {
+      return (shipping === undefined || shipping === 0) ? this.$t('product.freeText') : `${shipping}${this.$t('currency.symbol')}`
     }
     // getBrandStyle() {
     //   return 0
     // }
   },
   mounted () {
+    moment.locale('es')
     this.loading = this.$vs.loading({
       target: this.$refs.content,
       opacity: 1
@@ -126,7 +146,7 @@ export default {
         &__product {
           display: flex;
           justify-content: flex-start;
-          align-items: baseline;
+          align-items: center;
 
           &__price {
             display: flex;
@@ -152,12 +172,42 @@ export default {
             font-size: .8rem;
             margin: 0;
             line-height: 1.7;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #195bff;
+            font-weight: 600;
+            flex: 1;
+            text-align: right;
           }
         }
 
         &__info {
           display: flex;
           flex-direction: column;
+
+          &__first {
+            display: flex;
+            margin-top: 4px;
+            justify-content: space-between;
+
+            &__left {
+              color: var(--color-grey);
+              font-size: 12px;
+              margin: 0;
+            }
+
+            &__right {
+              color: var(--color-grey);
+              font-size: 14px;
+              margin: 0;
+              text-align: right;
+
+              &__label {
+                margin-left: 4px;
+              }
+            }
+          }
 
           &__title {
             margin: 0;
@@ -169,6 +219,7 @@ export default {
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             min-height: 40px;
+            text-align: justify;
           }
         }
       }

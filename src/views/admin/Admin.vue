@@ -48,6 +48,7 @@
             @click="updateProducts($vs.sortData($event ,products, 'price_offer'))"
           >price_offer</vs-th>
           <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'shop'))">shop</vs-th>
+          <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'shipping'))">shipping</vs-th>
           <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'url'))">url</vs-th>
         </vs-tr>
       </template>
@@ -85,6 +86,10 @@
             edit
             @click="edit = tr, tableConfig.editProp = 'shop', tableConfig.editActive = true"
           >{{ tr.shop }}</vs-td>
+          <vs-td
+            edit
+            @click="edit = tr, tableConfig.editProp = 'shipping', tableConfig.editActive = true"
+          >{{ tr.shipping }}</vs-td>
           <vs-td
             edit
             @click="edit = tr, tableConfig.editProp = 'url', tableConfig.editActive = true"
@@ -154,7 +159,7 @@ export default {
       },
       fields: {
         strings: ['name', 'img', 'url'],
-        integers: ['price_normal', 'price_offer'],
+        integers: ['price_normal', 'price_offer', 'shipping'],
         selects: ['shop']
       }
     }

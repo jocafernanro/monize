@@ -1,5 +1,11 @@
 const messages = {
   es: {
+    currency: {
+      symbol: '€'
+    },
+    product: {
+      freeText: 'GRATIS'
+    },
     about: {
       title: '¿Qué es monize?',
       mainParagraph: 'Monize es una web dedicada a la búsqueda de chollos por todo internet, enfocada únicamente en chollos realmente interesantes, de productos llamativos o deseados por los usuarios y de las mejores tiendas online actuales. Nuestro foco está al 100% en encontrar los mejores descuentos en productos de mucho interés para el usuario, enfocados en unas categorías muy concretas para ofrecer sólo chollos de mucho interés.',

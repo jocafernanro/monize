@@ -59,6 +59,15 @@
         >
         </vs-input>
 
+        <vs-input
+          class="create-product__form__input"
+          color="#7d33ff"
+          shadow
+          type="number"
+          v-model.trim="product.shipping"
+          placeholder="Shipping"
+        ></vs-input>
+
       <div class="center con-selects create-product__form__select">
         <vs-select
           color="#7d33ff"
