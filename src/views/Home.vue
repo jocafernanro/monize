@@ -12,6 +12,8 @@
         :price_offer="product.price_offer"
         :img="product.img"
         :discount="product.discount"
+        :date="product.date"
+        :shipping="product.shipping"
       ></ProductItem>
     </section>
     <cookie-law></cookie-law>
