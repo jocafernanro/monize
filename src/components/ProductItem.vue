@@ -74,7 +74,7 @@ export default {
       return moment(date).fromNow()
     },
     getShipping (shipping) {
-      return (shipping === undefined || shipping === 0) ? this.$t('product.freeText') : `${shipping}${this.$t('currency.symbol')}`
+      return !shipping ? this.$t('product.freeText') : `${shipping}${this.$t('currency.symbol')}`
     }
     // getBrandStyle() {
     //   return 0
