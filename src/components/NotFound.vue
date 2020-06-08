@@ -35,6 +35,7 @@ export default {
       margin: 0;
       text-shadow: 0.5px .5px 2px #000000;
       text-align: center;
+      font-size: 1.8rem;
     }
 
     &__info{
