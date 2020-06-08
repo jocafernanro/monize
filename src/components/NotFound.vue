@@ -26,10 +26,19 @@ export default {
 
 <style lang="scss" scoped>
   .notFound{
-    height: 100vh;
+    height: 100%;
     display: flex;
     flex-direction: column;
     position: relative;
+
+    &__img {
+      max-width: 100%;
+      width: 60%;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      height: auto !important;
+    }
 
     &__title{
       margin: 0;
@@ -39,10 +48,9 @@ export default {
     }
 
     &__info{
-      position: absolute;
-      top: 75%;
-      left: 20%;
-      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 
