@@ -30,6 +30,7 @@ export default {}
 <style lang='scss' scoped>
 .footer {
   background-color: var(--vs-theme-layout);
+  margin-top:auto;
 
   &__copyright {
     margin: 1em 0;
