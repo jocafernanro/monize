@@ -62,21 +62,6 @@ export default {
   display: flex;
   justify-content: center;
   padding: 2em 0;
-
-  &:after {
-    content: "";
-    background-image: radial-gradient(
-      var(--vs-theme-bg2) 0,
-      var(--vs-theme-bg) 40%,
-      transparent 75%
-    );
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -10;
-  }
 }
 
 .products {
