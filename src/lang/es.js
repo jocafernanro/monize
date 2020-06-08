@@ -89,7 +89,7 @@ const messages = {
       }
     },
     notFound: {
-      title: 'Ops! La pagina a la que intectas acceder no existe'
+      title: 'Ops! La página a la que intectas acceder no existe.'
     }
   }
 }
