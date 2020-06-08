@@ -30,6 +30,64 @@ const messages = {
       accept: 'Lo acepto',
       ignoreMe: 'Ignorar'
     },
+    admin: {
+      create: {
+        notifications: {
+          success: {
+            title: 'Genial! :)',
+            text: 'El usuario se ha añadido correctamente'
+          }
+        },
+        button: 'Crear',
+        fake: 'Crear producto fake',
+        backButton: 'Regresar',
+        title: 'Crear producto'
+      },
+      delete: {
+        notifications: {
+          confirmation: {
+            title: 'Estás a punto de borrar los productos seleccionados',
+            text: '¿Estás seguro de continuar?',
+            yes: 'Sí',
+            cancel: 'Cancelar'
+          },
+          success: {
+            title: '¡Éxito!',
+            text: 'El/los productos seleccionados se han borrado con éxito'
+          }
+        },
+        button: 'Borrar',
+        buttonAll: 'Borrar todos'
+      },
+      update: {
+        notifications: {
+          success: {
+            title: 'Genial! :)',
+            text: 'Valor actualizado correctamente'
+          }
+        }
+      }
+    },
+    home: {
+      spinner: {
+        text: 'Cargando chollos...'
+      }
+    },
+    footer: {
+      copyright: '© 2020 Monize',
+      aboutUs: {
+        title: 'Sobre nosotros',
+        link: 'Conócenos'
+      },
+      legal: {
+        title: 'Legal',
+        link: 'Políticas de privacidad'
+      },
+      contact: {
+        title: 'Contacto',
+        link: 'monize4dmin@gmail.com'
+      }
+    },
     notFound: {
       title: 'Ops! La pagina a la que intectas acceder no existe'
     }

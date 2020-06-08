@@ -1,7 +1,7 @@
 <template>
   <div class="product-item">
-    <div class="product-item__image">
-      <img :src="img" class="product-item__image__img"/>
+    <div class="product-item__image" ref="content">
+      <img :src="img" class="product-item__image__img" @load="closeSpinner"/>
     </div>
     <div class="product-item__discount">{{ discount }}%</div>
     <div class="product-item__footer">
@@ -24,15 +24,13 @@
       </div>
 
     </div>
-    <vs-button
-        :active="active == 1"
-        @click="active = 1"
-        class="product-item__button"
-      >
-        <a :href="url" target="_blank">
-          Ver chollo
-        </a>
-    </vs-button>
+    <a :href="url" target="_blank" class="product-item__container">
+      <vs-button
+          :active="active == 1"
+          class="product-item__container__button"
+        >Ver chollo</vs-button>
+    </a>
+
   </div>
 </template>
 
@@ -51,13 +49,23 @@ export default {
   },
   data () {
     return {
-      active: 0
+      active: 0,
+      loading: true
     }
   },
   methods: {
+    closeSpinner () {
+      this.loading.close()
+    }
     // getBrandStyle() {
     //   return 0
     // }
+  },
+  mounted () {
+    this.loading = this.$vs.loading({
+      target: this.$refs.content,
+      opacity: 1
+    })
   }
 }
 </script>
@@ -165,13 +173,13 @@ export default {
         }
       }
 
-      &__button {
-        width: 100%;
-        margin: 0;
+      &__container {
+        text-decoration: none;
+        color: white;
 
-        a {
-          text-decoration: none;
-          color: white;
+        &__button {
+          width: 100%;
+          margin: 0;
         }
       }
     }

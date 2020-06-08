@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" ref="content">
     <section class="products">
       <ProductItem
         class="products__product-card"
@@ -23,36 +23,34 @@
 import ProductItem from '../components/ProductItem'
 import CookieLaw from '../components/CookieLaw'
 import { mapState } from 'vuex'
-const fb = require('../firebaseConfig.js')
 
 export default {
   name: 'Home',
+  data: () => ({
+    loading: true
+  }),
   components: {
     ProductItem,
     CookieLaw
   },
-  computed: {
-    ...mapState(['products'])
-  },
-  methods: {
-    async getProducts () {
-      try {
-        const { docs } = await fb.productsCollection.get()
-
-        const products = docs.map(doc => {
-          const { id } = doc
-          const data = doc.data()
-          return { id, ...data }
+  computed: mapState({
+    products: state => state.products.activeProducts,
+    performingRequest: state => state.products.performingRequest
+  }),
+  watch: {
+    performingRequest: function (newValue) {
+      if (newValue) {
+        this.loading = this.$vs.loading({
+          text: this.$t('home.spinner.text'),
+          opacity: 1
         })
-
-        this.$store.commit('setProducts', products)
-      } catch (error) {
-        throw new Error('Something gone wrong!')
+      } else {
+        this.loading.close()
       }
     }
   },
   mounted () {
-    this.getProducts()
+    this.$store.dispatch('products/getProducts', true)
   }
 }
 </script>
@@ -62,21 +60,6 @@ export default {
   display: flex;
   justify-content: center;
   padding: 2em 0;
-
-  &:after {
-    content: "";
-    background-image: radial-gradient(
-      var(--vs-theme-bg2) 0,
-      var(--vs-theme-bg) 40%,
-      transparent 75%
-    );
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -10;
-  }
 }
 
 .products {

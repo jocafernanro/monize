@@ -17,15 +17,22 @@ firebase.initializeApp(config)
 
 // firebase utils
 const db = firebase.firestore()
+const auth = firebase.auth()
+const currentUser = auth.currentUser
+
 const settings = {}
 db.settings(settings)
 
 // firebase colections
 const productsCollection = db.collection('products')
 const brandsCollection = db.collection('brands')
+const usersCollection = db.collection('users')
 
 export {
   db,
   productsCollection,
-  brandsCollection
+  brandsCollection,
+  usersCollection,
+  auth,
+  currentUser
 }
