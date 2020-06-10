@@ -16,7 +16,7 @@ const config = {
 }
 
 firebase.initializeApp(config)
-firebase.analytics()
+const analytics = firebase.analytics()
 
 // firebase utils
 const db = firebase.firestore()
@@ -37,5 +37,6 @@ export {
   brandsCollection,
   usersCollection,
   auth,
-  currentUser
+  currentUser,
+  analytics
 }

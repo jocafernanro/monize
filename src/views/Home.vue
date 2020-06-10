@@ -14,6 +14,7 @@
         :discount="product.discount"
         :date="product.date"
         :shipping="product.shipping"
+        :item="product"
       ></ProductItem>
     </section>
     <cookie-law></cookie-law>

@@ -31,7 +31,9 @@
       </div>
 
     </div>
-    <a :href="url" target="_blank" class="product-item__container">
+    <a :href="url" target="_blank"
+    class="product-item__container"
+    @click.prevent="notifyOfferClick(item)">
       <vs-button
           :active="active == 1"
           class="product-item__container__button"
@@ -45,6 +47,7 @@
 
 import moment from 'moment'
 import 'moment/locale/es'
+const fb = require('../firebaseConfig.js')
 moment.locale('es')
 
 export default {
@@ -58,7 +61,8 @@ export default {
     name: String,
     shop: String,
     date: Number,
-    shipping: Number
+    shipping: Number,
+    item: Object
   },
   data () {
     return {
@@ -75,6 +79,10 @@ export default {
     },
     getShipping (shipping) {
       return !shipping ? this.$t('product.freeText') : `${shipping}${this.$t('currency.symbol')}`
+    },
+    notifyOfferClick (itemClicked) {
+      fb.analytics.logEvent('offer_clicked', itemClicked)
+      window.open(itemClicked.url, '_blank')
     }
     // getBrandStyle() {
     //   return 0
