@@ -5,7 +5,7 @@
         <router-link to="/">
           <img
             class="nav__item__logo"
-            src="https://firebasestorage.googleapis.com/v0/b/monize-63cfc.appspot.com/o/logo.png?alt=media&token=edb2810f-c47a-4f6d-91f4-3bb619723459"
+            src="https://firebasestorage.googleapis.com/v0/b/monize-63cfc.appspot.com/o/logo.png?alt=media&token=be607f58-b60f-4a48-913d-7df5542afe84"
             alt="logo"
           />
         </router-link>

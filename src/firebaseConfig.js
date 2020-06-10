@@ -1,5 +1,8 @@
-import firebase from 'firebase'
+import firebase from 'firebase/app'
 import 'firebase/firestore'
+import 'firebase/auth'
+import 'firebase/database'
+import 'firebase/analytics'
 
 const config = {
   apiKey: `${process.env.VUE_APP_MONIZE_API_KEY}`,
