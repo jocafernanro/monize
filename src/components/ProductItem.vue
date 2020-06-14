@@ -1,46 +1,48 @@
 <template>
-  <div class="product-item">
-    <div class="product-item__image" ref="content">
-      <img :src="img" class="product-item__image__img" @load="closeSpinner"/>
-    </div>
-    <div class="product-item__discount">{{ discount }}%</div>
-    <div class="product-item__footer">
-      <div class="product-item__footer__info">
-        <div class="product-item__footer__product">
-          <div class="product-item__footer__product__price">
-            <div class="product-item__footer__product__price__after">
-              {{ price_offer }}€
-            </div>
-            <div class="product-item__footer__product__price__before">
-              {{ price_normal }}€
-            </div>
-          </div>
-          <div class="product-item__footer__product__shop">
-            <p class="product-item__footer__product__shop shop">{{ shop }}</p>
+    <div class="product-item">
+      <router-link :to="{ path: `/offers/${item.id}`, name: 'ProductDetail', params: { id: item.id }}">
+        <div class="product-item__image" ref="content">
+          <img :src="img" class="product-item__image__img" @load="closeSpinner"/>
+        </div>
+        <div class="product-item__discount">{{ discount }}%</div>
+        <div class="product-item__footer">
+          <div class="product-item__footer__info">
+            <div class="product-item__footer__product">
+              <div class="product-item__footer__product__price">
+                <div class="product-item__footer__product__price__after">
+                  {{ price_offer }}€
+                </div>
+                <div class="product-item__footer__product__price__before">
+                  {{ price_normal }}€
+                </div>
+              </div>
+              <div class="product-item__footer__product__shop">
+                <p class="product-item__footer__product__shop shop">{{ shop }}</p>
 
+              </div>
+            </div>
+            <h4 class="product-item__footer__info__title">{{ name }}</h4>
+            <div class="product-item__footer__info__first">
+              <p class="product-item__footer__info__first__left">{{ formatDate(date) }}</p>
+              <p class="product-item__footer__info__first__right">
+                <i class='bx bxs-truck product-item__footer__info__first__right__icon'></i>
+                <span class="product-item__footer__info__first__right__label">{{ getShipping(shipping) }}</span>
+              </p>
+            </div>
           </div>
+
         </div>
-        <h4 class="product-item__footer__info__title">{{ name }}</h4>
-        <div class="product-item__footer__info__first">
-          <p class="product-item__footer__info__first__left">{{ formatDate(date) }}</p>
-          <p class="product-item__footer__info__first__right">
-            <i class='bx bxs-truck product-item__footer__info__first__right__icon'></i>
-            <span class="product-item__footer__info__first__right__label">{{ getShipping(shipping) }}</span>
-          </p>
-        </div>
+        <a :href="url" target="_blank"
+        class="product-item__container"
+        @click.prevent="notifyOfferClick(item)">
+          <vs-button
+              :active="active == 1"
+              class="product-item__container__button"
+            >Ver chollo</vs-button>
+        </a>
+
+      </router-link>
       </div>
-
-    </div>
-    <a :href="url" target="_blank"
-    class="product-item__container"
-    @click.prevent="notifyOfferClick(item)">
-      <vs-button
-          :active="active == 1"
-          class="product-item__container__button"
-        >Ver chollo</vs-button>
-    </a>
-
-  </div>
 </template>
 
 <script>
@@ -99,6 +101,9 @@ export default {
 
 <style lang="scss" scoped>
     $large-screen: var(--max-width);
+    a {
+      text-decoration: none;
+    }
     .product-item {
       min-width: 0;
       justify-self: stretch;
@@ -227,6 +232,7 @@ export default {
             -webkit-box-orient: vertical;
             min-height: 40px;
             text-align: justify;
+            color: black;
           }
         }
       }

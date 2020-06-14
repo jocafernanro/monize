@@ -11,7 +11,8 @@ const state = () => ({
   product: parseProduct(),
   isPerformingProductDelete: false,
   isPerformingProductUpdate: false,
-  productsToDelete: []
+  productsToDelete: [],
+  productSelected: {}
 })
 
 const parseProduct = (name = '', active = false, priceNormal, priceOffer, shop = '', img = '', url = '', shipping = 0) => {
@@ -145,6 +146,25 @@ const actions = {
   performingProductDelete ({ commit }, { status, products }) {
     commit('setPerformingProductDelete', status)
     status ? commit('setProductsToDelete', products) : commit('resetProductsToDelete')
+  },
+
+  getProductById ({ commit, state }, id) {
+    let productSelected
+    if (state.all.length) {
+      productSelected = state.all.find(item => item.id === id)
+      commit('setProductSelected', productSelected)
+    } else {
+      fb.productsCollection.doc(id).get().then((doc) => {
+        if (doc.exists) {
+          productSelected = doc.data()
+          commit('setProductSelected', productSelected)
+        } else {
+          console.log('No such product!')
+        }
+      }).catch(function (error) {
+        console.log('Error getting product:', error)
+      })
+    }
   }
 }
 
@@ -179,6 +199,9 @@ const mutations = {
   },
   resetProductsToDelete (state) {
     state.productsToDelete = []
+  },
+  setProductSelected (state, productSelected) {
+    state.productSelected = productSelected
   }
 }
 

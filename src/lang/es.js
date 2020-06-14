@@ -4,7 +4,15 @@ const messages = {
       symbol: '€'
     },
     product: {
-      freeText: 'GRATIS'
+      freeText: 'GRATIS',
+      detail: {
+        shop: {
+          label: 'Tienda'
+        }
+      },
+      share: {
+        whatsapp: 'Hey%20mira%20el%20chollo%20que%20he%20encontrado%20en%20tuschollosyofertas.com'
+      }
     },
     about: {
       title: '¿Qué es monize?',

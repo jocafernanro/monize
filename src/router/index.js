@@ -50,6 +50,24 @@ const routes = [
     component: () => import('../views/admin/CreateProduct.vue')
   },
   {
+    path: '/offers/:id',
+    name: 'ProductDetail',
+    component: () => import('../views/ProductDetail.vue'),
+    meta: {
+      title: 'Home Page - Example App',
+      metaTags: [
+        {
+          name: 'description',
+          content: 'The home page of our example app.'
+        },
+        {
+          property: 'og:description',
+          content: 'The home page of our example app.'
+        }
+      ]
+    }
+  },
+  {
     path: '/not-found',
     name: '404',
     component: NotFound
