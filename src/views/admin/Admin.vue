@@ -36,7 +36,7 @@
             />
           </vs-th>
           <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'name'))">Name</vs-th>
-          <vs-th>Active</vs-th>
+          <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'active'))">Active</vs-th>
           <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'discount'))">discount</vs-th>
           <vs-th sort @click="updateProducts($vs.sortData($event ,products, 'img'))">img</vs-th>
           <vs-th

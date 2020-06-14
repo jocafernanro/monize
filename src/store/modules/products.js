@@ -39,19 +39,23 @@ const parseProducts = (products) => (
 )
 
 // getters
-const getters = {}
+const getters = {
+  getActiveSortedProductsByDate: state => {
+    return state.activeProducts.slice().sort((a, b) => b.date - a.date)
+  }
+}
 
 // actions
 const actions = {
-  async getProducts ({ commit }, onlyActive) {
+  async getProducts ({ commit, getters }, onlyActive) {
     commit('setPerformingRequest', true)
     try {
       const { docs } = await fb.productsCollection.get()
       const activeProducts = parseProducts(docs.filter(doc => doc.data().active))
       const products = parseProducts(docs)
-
       commit('setActiveProducts', activeProducts)
       commit('setProducts', products)
+      commit('sortActiveProductsByDate', getters.getActiveSortedProductsByDate)
       commit('setPerformingRequest', false)
     } catch (error) {
       throw new Error('Something gone wrong!')
@@ -105,7 +109,6 @@ const actions = {
       shipping
     )
     fb.productsCollection.add(product).then(ref => {
-      console.log('Added document with ID: ', ref.id)
       commit('addProduct', product)
       commit('resetProduct', product)
       commit('setPerformingRequest', false)
@@ -179,6 +182,9 @@ const mutations = {
   },
   resetProductsToDelete (state) {
     state.productsToDelete = []
+  },
+  sortActiveProductsByDate (state, sortedProducts) {
+    state.activeProducts = sortedProducts
   }
 }
 
